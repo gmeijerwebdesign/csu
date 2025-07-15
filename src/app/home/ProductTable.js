@@ -1,21 +1,5 @@
 import { FaPlus } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
-const productsTest = [
-  {
-    product_id: "P001",
-    naam: "Laptop",
-    serienummer: "SN123456",
-    opmerking: "Voorraadlaag",
-    aantal: 3,
-  },
-  {
-    product_id: "P002",
-    naam: "Monitor",
-    serienummer: "SN654321",
-    opmerking: "Nieuw model",
-    aantal: 10,
-  },
-];
 
 export default function ProductTable({
   setSelectedTimeBox,
@@ -71,9 +55,12 @@ export default function ProductTable({
             </tr>
 
             {products.map((product) => (
-              <tr key={product.id} className="border-t hover:bg-gray-50">
+              <tr
+                key={product.product_id}
+                className="border-t hover:bg-gray-50"
+              >
                 <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.id}
+                  {product.product_id}
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-700">
                   {product.title}
@@ -95,7 +82,7 @@ export default function ProductTable({
                       onClick={() => {
                         setSelectedTimeBox({
                           entry: product,
-                          index: product.id,
+                          index: product.product_id,
                         });
                         setMode("edit");
                         setIsOpen(true);

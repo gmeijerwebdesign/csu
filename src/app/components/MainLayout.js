@@ -35,7 +35,7 @@ export default function MainLayout({ user, products }) {
     <div className="flex">
       <SideBar user={user} handleNavigation={handleNavigation} />
       <div className="flex flex-col w-full max-w-full">
-        <Header />
+        <Header user={user} />
         <Banner />
         <div className="p-4 bg-[rgb(243,243,244)] w-full ">
           {displayScreen(currentNav)}

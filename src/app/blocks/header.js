@@ -1,6 +1,6 @@
 import { IoMdMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa6";
-export default function Header({ name }) {
+export default function Header({ user }) {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -15,10 +15,10 @@ export default function Header({ name }) {
           <span className="font-bold">{`${year}-${month}-${day}`}</span>
         </p>
         <p>
-          ingelogd als : <span className="font-bold">{name}</span>
+          ingelogd als : <span className="font-bold">{user.email}</span>
         </p>
         <p>
-          Organisatie : <span className="font-bold">{name}</span>
+          Organisatie : <span className="font-bold">{user.email}</span>
         </p>
         <IoMdMail className="text-[17px]" />
         <FaBell className="text-[17px]" />

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-
 export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
   const e = mode === "edit" ? selectedTimeBox?.entry : null;
 
   const [formData, setFormData] = useState({
+    // product_id: 0,
     title: "",
     serialnumber: "",
     message: "",
@@ -13,6 +13,7 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
   useEffect(() => {
     if (mode === "edit" && e) {
       setFormData({
+        // product_id: e.product_id,
         title: e.title || "",
         serialnumber: e.serialnumber || "",
         message: e.message || "",
@@ -29,24 +30,45 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
   }, [e, mode]);
 
   const handleChange = (e) => {
-    const { title, value } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [title]: title === "aantal" ? Number(value) : value,
+      [name]: name === "amount" ? Number(value) : value,
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (mode === "edit") {
-      console.log("Product bewerken:", formData);
-      // Update logica hier
-    } else if (mode === "add") {
-      console.log("Nieuw product toevoegen:", formData);
-      // Toevoegen logica hier
+      const product_id = selectedTimeBox?.entry?.product_id;
+
+      if (!product_id) {
+        console.error("Geen product_id beschikbaar!");
+        return;
+      }
+
+      const res = await fetch("/api/edit-product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product_id,
+          ...formData,
+        }),
+      });
+      console.log("Product ID:", product_id);
+
+      if (!res.ok) {
+        console.error("Fout bij bewerken:", await res.text());
+      } else {
+        console.log("Succesvol bewerkt!");
+      }
     }
 
+    // Sluit modal
+    window.location.reload();
     setIsOpen(false);
   };
 
@@ -72,8 +94,8 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
+            id="title"
+            name="title"
             value={formData.title}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
@@ -107,8 +129,8 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
             Opmerking
           </label>
           <textarea
-            id="opmerking"
-            name="opmerking"
+            id="message"
+            name="message"
             value={formData.message}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
@@ -125,8 +147,8 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
           </label>
           <input
             type="number"
-            id="aantal"
-            name="aantal"
+            id="amount"
+            name="amount"
             value={formData.amount}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded px-3 py-2"

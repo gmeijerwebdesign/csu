@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
 import MainLayout from "./components/MainLayout";
-import { getProducts } from "./utils/getProducts.js";
+import { getProducts } from "./utils/Products.js";
 
 export default async function Main() {
   const products = await getProducts();
