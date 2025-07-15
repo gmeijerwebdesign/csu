@@ -3,7 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "../utils/supabase/client";
 
-export default function HomeScreen({ data }) {
+export default function HomeScreen({ user }) {
   const supabase = createClient();
   const router = useRouter();
 
@@ -16,7 +16,7 @@ export default function HomeScreen({ data }) {
 
   return (
     <div>
-      <p>Hello {data.user.email}</p>
+      <p>Hello {user.email}</p>
       <button onClick={signOut}>Sign Out</button>
     </div>
   );
