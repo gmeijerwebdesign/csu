@@ -1,7 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
-import HomeScreen from "./pages/home-screen";
-import SideBar from "./pages/blocks/sidebar";
+import HomeScreen from "./home/page.js";
+import SideBar from "./blocks/sidebar";
+import Header from "./blocks/header";
+import Banner from "./blocks/banner";
 
 export default async function Main() {
   const supabase = await createClient();
@@ -13,8 +15,14 @@ export default async function Main() {
 
   return (
     <div className="flex">
-      <SideBar />
-      <HomeScreen data={data} />
+      <SideBar data={data} />
+      <div className="flex flex-col w-full max-w-full">
+        <Header />
+        <Banner />
+        <div className="p-4 bg-[rgb(243,243,244)] w-full ">
+          <HomeScreen data={data} />
+        </div>
+      </div>
     </div>
   );
 }

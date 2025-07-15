@@ -5,7 +5,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { RiAdminFill } from "react-icons/ri";
 
 import { IoMdSettings } from "react-icons/io";
-export default function SideBar({ session, onNavigate }) {
+export default function SideBar({ session, onNavigate, data }) {
   const menuItems = [
     { label: "Inventarisadministratie", value: "home", icon: <SlCalender /> },
     {
@@ -27,8 +27,9 @@ export default function SideBar({ session, onNavigate }) {
   }
 
   return (
-    <div className="hidden lg:flex  min-h-screen pt-11 w-[15%] bg-[#2f5031] text-[#e4e8ee] font-medium text-[12px]">
+    <div className="hidden lg:flex  min-h-screen pt-11 w-[15%] bg-[#2f3c50] text-[#e4e8ee] font-medium text-[12px]">
       <div className="flex flex-col gap-7 w-full ">
+        <p className="text-center">{data.user.email}</p>
         {menuItems.map((item, index) => (
           <div
             key={index}
