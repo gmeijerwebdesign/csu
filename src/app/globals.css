@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.layout {
+  background: #f3f3f4;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.auth-input-bar {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  padding: 0.5rem;
+  width: 300px;
+  color: #969696;
+  outline: none;
+}
+.admin-input-bar {
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+  padding: 0.5rem;
+  width: 300px;
+  color: #969696;
+  outline: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.custom-button {
+  border-width: 1px; /* border-1 */
+  border-style: solid; /* standaard bij border */
+  border-color: #d1d5db; /* border-gray-300 */
+  font-weight: 700; /* font-bold */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm (Tailwind kleine schaduw) */
+  width: 300px; /* w-[300px] */
+  padding: 0.5rem; /* p-2 (8px) */
+  color: #c0c0c0; /* text-[#c0c0c0] */
+  transition-property: color, background-color;
+  transition-duration: 500ms; /* duration-500 */
+  cursor: pointer; /* meestal handig op buttons */
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.custom-button:hover {
+  color: white;
+  background-color: #93c5fd; /* hover:bg-blue-300 */
 }
