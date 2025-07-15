@@ -6,7 +6,7 @@ import { RiAdminFill } from "react-icons/ri";
 import { IoMdSettings } from "react-icons/io";
 import { useRouter } from "next/navigation";
 
-export default function SideBar({ session, handleNavigation, user }) {
+export default function SideBar({ handleNavigation, user }) {
   const router = useRouter();
 
   const menuItems = [
