@@ -9,7 +9,7 @@ import Banner from "../blocks/banner";
 import Settings from "../settings/page";
 import Organization from "../organisation/page";
 
-export default function MainLayout({ user }) {
+export default function MainLayout({ user, products }) {
   const [currentNav, setCurrentNav] = useState("home");
 
   const handleNavigation = (nav) => {
@@ -18,15 +18,16 @@ export default function MainLayout({ user }) {
   };
 
   const displayScreen = (nav) => {
+    const home = <HomeScreen user={user} products={products} />;
     switch (nav) {
       case "home":
-        return <HomeScreen user={user} />;
+        return home;
       case "Settings":
         return <Settings />;
       case "Organisatiebeheer":
         return <Organization user={user} />;
       default:
-        return <HomeScreen user={user} />;
+        return home;
     }
   };
 
