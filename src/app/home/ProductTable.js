@@ -1,4 +1,4 @@
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 
 export default function ProductTable({
@@ -8,6 +8,29 @@ export default function ProductTable({
   setMode,
   products,
 }) {
+  const handleDelete = async (product_id) => {
+    let endpoint = "";
+
+    if (!product_id) {
+      console.error("Geen product_id beschikbaar!");
+      return;
+    }
+    endpoint = "/api/delete-product";
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product_id }),
+    });
+
+    if (!res.ok) {
+      console.error("Fout:", await res.text());
+      return;
+    }
+
+    console.log("Succesvol verwijderd");
+    window.location.reload();
+  };
   return (
     <div>
       {/* {products.map((e, index) => {
@@ -74,11 +97,11 @@ export default function ProductTable({
                 <td className="px-4 py-2 text-sm text-gray-700">
                   {product.amount}
                 </td>
-                <td className="px-4 py-2 text-center">
-                  <button className="text-blue-500 hover:text-blue-700 transition duration-200">
+                <td className="px-4 py-2 text-center ">
+                  <button className="p-1 text-blue-500 hover:text-blue-700 transition duration-200">
                     <FiEdit
-                      size={20}
-                      className="cursor-pointer"
+                      size={15}
+                      className="cursor-pointer "
                       onClick={() => {
                         setSelectedTimeBox({
                           entry: product,
@@ -87,6 +110,13 @@ export default function ProductTable({
                         setMode("edit");
                         setIsOpen(true);
                       }}
+                    />
+                  </button>
+                  <button className="text-red-500 hover:text-red-700 transition duration-200">
+                    <FaTrash
+                      size={15}
+                      className="cursor-pointer"
+                      onClick={() => handleDelete(product.product_id)}
                     />
                   </button>
                 </td>

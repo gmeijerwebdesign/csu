@@ -14,5 +14,5 @@ export default async function Main() {
     redirect("/login");
   }
 
-  return <MainLayout user={data.user} products={products} />;
+  return <MainLayout user={data.user} products={products || []} />;
 }

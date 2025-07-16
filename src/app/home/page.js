@@ -33,9 +33,9 @@ export default function HomeScreen({ user, products }) {
       {isOpen ? (
         <div className="fixed inset-0 flex items-center justify-center  z-50 ">
           <FormModal
+            selectedTimeBox={selectedTimeBox}
             setIsOpen={setIsOpen}
             mode={mode}
-            selectedTimeBox={selectedTimeBox}
           />
         </div>
       ) : null}

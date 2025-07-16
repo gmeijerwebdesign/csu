@@ -21,7 +21,7 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
       });
     } else if (mode === "add") {
       setFormData({
-        name: "",
+        title: "",
         serialnumber: "",
         message: "",
         amount: 0,
@@ -40,34 +40,36 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    let endpoint = "";
+    let payload = { ...formData };
+
     if (mode === "edit") {
       const product_id = selectedTimeBox?.entry?.product_id;
-
       if (!product_id) {
         console.error("Geen product_id beschikbaar!");
         return;
       }
-
-      const res = await fetch("/api/edit-product", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          product_id,
-          ...formData,
-        }),
-      });
-      console.log("Product ID:", product_id);
-
-      if (!res.ok) {
-        console.error("Fout bij bewerken:", await res.text());
-      } else {
-        console.log("Succesvol bewerkt!");
-      }
+      endpoint = "/api/edit-product";
+      payload.product_id = product_id;
     }
 
-    // Sluit modal
+    if (mode === "add") {
+      endpoint = "/api/create-product";
+      // GEEN product_id meesturen; Supabase doet dat automatisch
+    }
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      console.error("Fout:", await res.text());
+      return;
+    }
+
+    console.log("Succesvol opgeslagen");
     window.location.reload();
     setIsOpen(false);
   };
