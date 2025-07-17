@@ -1,23 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "../utils/supabase/client";
 import ProductTable from "./ProductTable";
 import FormModal from "../blocks/formModal";
 
-export default function HomeScreen({ user, products }) {
+export default function HomeScreen({ user, products, profile }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTimeBox, setSelectedTimeBox] = useState(null);
   const [mode, setMode] = useState(null);
-  const supabase = createClient();
   const router = useRouter();
-
-  async function signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      router.push("/login");
-    }
-  }
 
   return (
     <div>

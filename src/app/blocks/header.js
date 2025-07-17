@@ -1,6 +1,6 @@
 import { IoMdMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa6";
-export default function Header({ user }) {
+export default function Header({ user, profile }) {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -12,13 +12,14 @@ export default function Header({ user }) {
       <div className=" flex gap-5 items-center">
         <p>
           Huidige week :{" "}
-          <span className="font-bold">{`${year}-${month}-${day}`}</span>
+          <span className="font-bold">{`${year}-0${month}-0${day}`}</span>
         </p>
         <p>
           ingelogd als : <span className="font-bold">{user.email}</span>
         </p>
         <p>
-          Organisatie : <span className="font-bold">{user.email}</span>
+          Organisatie :{" "}
+          <span className="font-bold">{profile.organisations.title}</span>
         </p>
         <IoMdMail className="text-[17px]" />
         <FaBell className="text-[17px]" />

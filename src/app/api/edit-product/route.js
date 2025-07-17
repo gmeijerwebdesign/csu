@@ -9,7 +9,7 @@ export async function POST(req) {
   const { product_id, title, serialnumber, message, amount } = body;
 
   const { data, error } = await supabase
-    .from("organisation_inventory")
+    .from("csu_inventory")
     .update({
       title,
       serialnumber,

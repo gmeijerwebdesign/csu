@@ -9,7 +9,7 @@ export async function POST(req) {
   const { title, serialnumber, message, amount } = body;
 
   const { data, error } = await supabase
-    .from("organisation_inventory")
+    .from("csu_inventory")
     .insert([{ title, serialnumber, message, amount }])
     .select(); // retourneert nieuw item
 

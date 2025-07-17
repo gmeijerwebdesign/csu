@@ -9,7 +9,7 @@ export async function POST(req) {
   const { product_id } = body;
 
   const { error } = await supabase
-    .from("organisation_inventory")
+    .from("csu_inventory")
     .delete()
     .eq("product_id", Number(product_id));
 
