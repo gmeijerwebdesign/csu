@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
+export default function FormModal({
+  selectedTimeBox,
+  setIsOpen,
+  mode,
+  profile,
+}) {
   const e = mode === "edit" ? selectedTimeBox?.entry : null;
-
   const [formData, setFormData] = useState({
     // product_id: 0,
     title: "",
     serialnumber: "",
     message: "",
     amount: 0,
+    organisation_id: profile.organisation_id,
   });
   useEffect(() => {
     if (mode === "edit" && e) {
@@ -18,6 +23,7 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
         serialnumber: e.serialnumber || "",
         message: e.message || "",
         amount: e.amount || 0,
+        organisation_id: profile.organisation_id,
       });
     } else if (mode === "add") {
       setFormData({
@@ -25,6 +31,7 @@ export default function FormModal({ selectedTimeBox, setIsOpen, mode }) {
         serialnumber: "",
         message: "",
         amount: 0,
+        organisation_id: profile.organisation_id,
       });
     }
   }, [e, mode]);

@@ -17,8 +17,8 @@ export default function HomeScreen({ user, products, profile }) {
           products={products}
           setSelectedTimeBox={setSelectedTimeBox}
           setIsOpen={setIsOpen}
-          mode={mode}
           setMode={setMode}
+          profile={profile}
         />
       </div>
       {isOpen ? (
@@ -27,6 +27,7 @@ export default function HomeScreen({ user, products, profile }) {
             selectedTimeBox={selectedTimeBox}
             setIsOpen={setIsOpen}
             mode={mode}
+            profile={profile}
           />
         </div>
       ) : null}

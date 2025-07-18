@@ -19,8 +19,11 @@ export default function Header({ user, profile }) {
         </p>
         <p>
           Organisatie :{" "}
-          <span className="font-bold">{profile.organisations.title}</span>
+          <span className="font-bold">
+            {profile?.organisations?.title || "Geen organisatie"}
+          </span>
         </p>
+
         <IoMdMail className="text-[17px]" />
         <FaBell className="text-[17px]" />
       </div>

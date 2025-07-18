@@ -4,9 +4,9 @@ import { FiEdit } from "react-icons/fi";
 export default function ProductTable({
   setSelectedTimeBox,
   setIsOpen,
-  mode,
   setMode,
   products,
+  profile,
 }) {
   const handleDelete = async (product_id) => {
     let endpoint = "";
@@ -20,7 +20,10 @@ export default function ProductTable({
     const res = await fetch(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ product_id }),
+      body: JSON.stringify({
+        product_id,
+        organisation_id: profile.organisation_id,
+      }),
     });
 
     if (!res.ok) {
@@ -62,20 +65,25 @@ export default function ProductTable({
             </tr>
           </thead>
           <tbody>
-            {/* product toevoegen */}
-            <tr className="border-t hover:bg-gray-50">
-              <td className="px-4 py-2 text-sm text-gray-700" colSpan={5}></td>
-              <td className="px-4 py-2 text-center text-green-700">
-                <FaPlus
-                  className="cursor-pointer inline-block"
-                  onClick={() => {
-                    setSelectedTimeBox(null); // Geen geselecteerd product
-                    setMode("add");
-                    setIsOpen(true);
-                  }}
-                />
-              </td>
-            </tr>
+            {/* product toevoegen als manager */}
+            {profile?.role === "manager" ? (
+              <tr className="border-t hover:bg-gray-50">
+                <td
+                  className="px-4 py-2 text-sm text-gray-700"
+                  colSpan={5}
+                ></td>
+                <td className="px-4 py-2 text-center text-green-700">
+                  <FaPlus
+                    className="cursor-pointer inline-block"
+                    onClick={() => {
+                      setSelectedTimeBox(null); // Geen geselecteerd product
+                      setMode("add");
+                      setIsOpen(true);
+                    }}
+                  />
+                </td>
+              </tr>
+            ) : null}
 
             {products.map((product) => (
               <tr
