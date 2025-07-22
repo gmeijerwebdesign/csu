@@ -1,18 +1,37 @@
-// app/page.tsx of waar je ook je entry-point hebt
+// app/page.tsx
+
 import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
 import MainLayout from "./components/MainLayout";
 import { getProducts } from "./utils/Products.js";
 
 export default async function Main() {
-  const products = await getProducts();
-
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
 
-  if (error || !data?.user) {
+  // 🔐 Haal de ingelogde gebruiker op
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
     redirect("/login");
   }
 
-  return <MainLayout user={data.user} products={products || []} />;
+  // 🧑‍💼 Haal profiel op
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("*, organisations(title, is_hoofd)")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError || !profile) {
+    console.error("Profiel niet gevonden:", profileError);
+    redirect("/login"); // of een foutpagina
+  }
+
+  // ✅ Geef profile door aan getProducts
+  const products = await getProducts(profile);
+
+  return <MainLayout user={user} profile={profile} products={products || []} />;
 }

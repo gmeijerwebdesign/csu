@@ -3,22 +3,34 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductTable from "./ProductTable";
 import FormModal from "../blocks/formModal";
-
-export default function HomeScreen({ user, products, profile }) {
+// Inventariesatiebeheer scherm
+export default function HomeScreen({
+  user,
+  products: initialProducts,
+  profile,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTimeBox, setSelectedTimeBox] = useState(null);
   const [mode, setMode] = useState(null);
+  const [products, setProducts] = useState(initialProducts);
   const router = useRouter();
+  const [glow, setGlow] = useState(false);
 
   return (
     <div>
-      <div className="p-4">
+      <div>
+        <h1 className="py-4 font-bold text-xl text-slate-800">
+          Inventariesatiebeheer
+        </h1>
         <ProductTable
           products={products}
           setSelectedTimeBox={setSelectedTimeBox}
           setIsOpen={setIsOpen}
           setMode={setMode}
+          setProducts={setProducts}
           profile={profile}
+          setGlow={setGlow}
+          glow={glow}
         />
       </div>
       {isOpen ? (
@@ -28,6 +40,8 @@ export default function HomeScreen({ user, products, profile }) {
             setIsOpen={setIsOpen}
             mode={mode}
             profile={profile}
+            setProducts={setProducts} // ✅ hier!
+            setGlow={setGlow}
           />
         </div>
       ) : null}

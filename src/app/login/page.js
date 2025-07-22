@@ -36,9 +36,9 @@ export default function LoginPage() {
         <button className="custom-button" formAction={login}>
           Log in
         </button>
-        <button className="custom-button" formAction={signup}>
+        {/* <button className="custom-button" formAction={signup}>
           Sign up
-        </button>
+        </button> */}
       </form>
     </div>
   );

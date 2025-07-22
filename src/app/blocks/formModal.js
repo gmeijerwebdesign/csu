@@ -5,6 +5,8 @@ export default function FormModal({
   setIsOpen,
   mode,
   profile,
+  setProducts,
+  setGlow,
 }) {
   const e = mode === "edit" ? selectedTimeBox?.entry : null;
   const [formData, setFormData] = useState({
@@ -76,9 +78,23 @@ export default function FormModal({
       return;
     }
 
-    console.log("Succesvol opgeslagen");
-    window.location.reload();
+    const jsonResult = await res.json();
+    const newProduct = jsonResult.data[0];
+    if (mode === "add") {
+      setProducts((prev) => [...prev, newProduct]); // ✅ voeg toe
+    }
+
+    if (mode === "edit") {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.product_id === newProduct.product_id ? newProduct : p
+        )
+      ); // ✅ werk bij
+    }
+
     setIsOpen(false);
+    setGlow(true);
+    setTimeout(() => setGlow(false), 2000);
   };
 
   return (

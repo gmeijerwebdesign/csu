@@ -1,4 +1,4 @@
-// app/api/edit-product/route.js
+// app/api/add-product/route.js
 
 import { createClient } from "../../utils/supabase/server";
 
@@ -6,15 +6,17 @@ export async function POST(req) {
   const supabase = await createClient();
   const body = await req.json();
 
-  const { title, serialnumber, message, amount, organisation_id } = body;
+  const {  title, serialnumber, message, amount, organisation_id } =
+    body;
 
   const isCSU = organisation_id === 13;
   const table = isCSU ? "csu_inventory" : "organisation_inventory";
+  console.log(body);
 
   const { data, error } = await supabase
     .from(table)
-    .insert([{ title, serialnumber, message, amount, organisation_id }])
-    .select(); // retourneert nieuw item
+    .insert({ title, serialnumber, message, amount, organisation_id })
+    .select();
 
   if (error) {
     console.error("Supabase update error:", error);

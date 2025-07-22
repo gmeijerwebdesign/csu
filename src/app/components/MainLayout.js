@@ -1,7 +1,7 @@
 // components/MainLayout.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HomeScreen from "../home/page";
 import SideBar from "../blocks/sidebar";
 import Header from "../blocks/header";
@@ -10,31 +10,9 @@ import Settings from "../settings/page";
 import Organization from "../organisation/page";
 import { createClient } from "../utils/supabase/client";
 
-export default function MainLayout({ user, products }) {
+export default function MainLayout({ user, products, profile }) {
   const [currentNav, setCurrentNav] = useState("home");
   const supabase = createClient();
-  const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    const getProfile = async () => {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*, organisations(title, is_hoofd)")
-          .eq("id", user.id)
-          .single();
-
-        setProfile(data);
-      }
-    };
-
-    getProfile();
-  }, []);
 
   const handleNavigation = (nav) => {
     setCurrentNav(nav);
@@ -51,7 +29,7 @@ export default function MainLayout({ user, products }) {
       case "Settings":
         return <Settings />;
       case "Organisatiebeheer":
-        return <Organization user={user} />;
+        return <Organization user={user} profile={profile} />;
       default:
         return home;
     }

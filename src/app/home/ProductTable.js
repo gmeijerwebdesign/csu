@@ -1,23 +1,25 @@
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
+import { BiTransfer } from "react-icons/bi";
+import { useState } from "react";
 
 export default function ProductTable({
   setSelectedTimeBox,
   setIsOpen,
   setMode,
   products,
+  setProducts,
   profile,
+  glow,
+  setGlow,
 }) {
   const handleDelete = async (product_id) => {
-    let endpoint = "";
-
     if (!product_id) {
       console.error("Geen product_id beschikbaar!");
       return;
     }
-    endpoint = "/api/delete-product";
 
-    const res = await fetch(endpoint, {
+    const res = await fetch("/api/delete-product", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -32,17 +34,25 @@ export default function ProductTable({
     }
 
     console.log("Succesvol verwijderd");
-    window.location.reload();
+
+    // ✅ verwijder uit lijst
+    setProducts((prev) =>
+      prev.filter((product) => product.product_id !== product_id)
+    );
+    setGlow(true);
+    setTimeout(() => setGlow(false), 2000);
   };
+
+  const isDirector =
+    profile?.role === "manager" || profile?.organisation_id === 13;
   return (
     <div>
-      {/* {products.map((e, index) => {
-        <p>{e.naam}</p>;
-      })} */}
       {/* Tabel voor grotere schermen */}
-      <div className="hidden md:block overflow-x-auto shadow-md ">
+      <div
+        className={`hidden md:block overflow-x-auto shadow-md ${glow} ? "animate-glow" : ""`}
+      >
         <table className="min-w-full border border-gray-200 shadow rounded-lg">
-          <thead className="bg-gray-100">
+          <thead>
             <tr>
               <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
                 Product ID
@@ -66,7 +76,7 @@ export default function ProductTable({
           </thead>
           <tbody>
             {/* product toevoegen als manager */}
-            {profile?.role === "manager" ? (
+            {isDirector ? (
               <tr className="border-t hover:bg-gray-50">
                 <td
                   className="px-4 py-2 text-sm text-gray-700"
@@ -88,7 +98,9 @@ export default function ProductTable({
             {products.map((product) => (
               <tr
                 key={product.product_id}
-                className="border-t hover:bg-gray-50"
+                className={`border-t ${
+                  glow ? "animate-glow" : ""
+                } hover:bg-gray-50`}
               >
                 <td className="px-4 py-2 text-sm text-gray-700">
                   {product.product_id}
@@ -127,6 +139,11 @@ export default function ProductTable({
                       onClick={() => handleDelete(product.product_id)}
                     />
                   </button>
+                  {isDirector ? (
+                    <button className=" hover:text-green-700 transition duration-200">
+                      <BiTransfer size={15} className="cursor-pointer" />
+                    </button>
+                  ) : null}
                 </td>
               </tr>
             ))}
@@ -139,7 +156,7 @@ export default function ProductTable({
         {products.map((product) => (
           <div
             key={product.product_id}
-            className="border border-gray-200 rounded-lg p-4 shadow-sm"
+            className="border productform border-gray-200 rounded-lg p-4 shadow-sm"
           >
             <div className="mb-2">
               <span className="font-semibold text-gray-600">Product ID:</span>{" "}

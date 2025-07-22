@@ -6,7 +6,10 @@ export async function getProducts(profile) {
   const isCSU = profile?.organisation_id === 13;
   const table = isCSU ? "csu_inventory" : "organisation_inventory";
 
-  const { data: products, error } = await supabase.from(table).select();
+  const { data: products, error } = await supabase
+    .from(table)
+    .select()
+    .order("id", { ascending: true });
 
   if (error) {
     console.error("Error fetching data:", error.message);
