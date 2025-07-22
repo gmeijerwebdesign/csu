@@ -21,7 +21,12 @@ export default function MainLayout({ user, products, profile, organisations }) {
 
   const displayScreen = (nav) => {
     const home = (
-      <HomeScreen user={user} products={products} profile={profile} />
+      <HomeScreen
+        user={user}
+        products={products}
+        profile={profile}
+        organisations={organisations}
+      />
     );
     switch (nav) {
       case "home":
@@ -43,14 +48,6 @@ export default function MainLayout({ user, products, profile, organisations }) {
 
   return (
     <div className="flex">
-      {/* {profile && (
-        <div className="p-2">
-          <p>User: {profile.email}</p>
-          <p>Organisatie ID: {profile.organisation_id}</p>
-          {profile.organisations.title}
-          <p>Rol: {profile.role}</p>
-        </div>
-      )} */}
       <SideBar
         user={user}
         handleNavigation={handleNavigation}

@@ -6,9 +6,11 @@ import { useState } from "react";
 export default function ProductTable({
   setSelectedTimeBox,
   setIsOpen,
+  setIsOpenOrg,
   setMode,
   products,
   setProducts,
+  setSelectedProduct,
   profile,
   glow,
   setGlow,
@@ -141,7 +143,14 @@ export default function ProductTable({
                   </button>
                   {isDirector ? (
                     <button className=" hover:text-green-700 transition duration-200">
-                      <BiTransfer size={15} className="cursor-pointer" />
+                      <BiTransfer
+                        size={15}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setIsOpenOrg(true);
+                        }}
+                      />
                     </button>
                   ) : null}
                 </td>
