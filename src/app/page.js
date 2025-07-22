@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
 import MainLayout from "./components/MainLayout";
 import { getProducts } from "./utils/Products.js";
+import { getOrganisation } from "./utils/Organisations";
 
 export default async function Main() {
   const supabase = await createClient();
@@ -33,5 +34,14 @@ export default async function Main() {
   // ✅ Geef profile door aan getProducts
   const products = await getProducts(profile);
 
-  return <MainLayout user={user} profile={profile} products={products || []} />;
+  const organisations = await getOrganisation();
+
+  return (
+    <MainLayout
+      user={user}
+      profile={profile}
+      products={products || []}
+      organisations={organisations || []}
+    />
+  );
 }

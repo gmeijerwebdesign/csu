@@ -10,7 +10,7 @@ import Settings from "../settings/page";
 import Organization from "../organisation/page";
 import { createClient } from "../utils/supabase/client";
 
-export default function MainLayout({ user, products, profile }) {
+export default function MainLayout({ user, products, profile, organisations }) {
   const [currentNav, setCurrentNav] = useState("home");
   const supabase = createClient();
 
@@ -29,7 +29,13 @@ export default function MainLayout({ user, products, profile }) {
       case "Settings":
         return <Settings />;
       case "Organisatiebeheer":
-        return <Organization user={user} profile={profile} />;
+        return (
+          <Organization
+            user={user}
+            profile={profile}
+            organisations={organisations}
+          />
+        );
       default:
         return home;
     }
