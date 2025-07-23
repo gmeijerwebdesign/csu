@@ -1,19 +1,34 @@
+"use client";
 import { useState } from "react";
+import { addUser } from "../utils/addUser.js";
 
 export default function Admin({ organisations }) {
   const [selectedOrganisation, setSelectedOrganisation] = useState("");
-  const [orgList, setOrgList] = useState(organisations || []);
 
   const handleChange = (e) => {
     setSelectedOrganisation(e.target.value);
   };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    try {
+      await addUser(formData);
+      alert("Gebruiker succesvol toegevoegd!");
+    } catch (err) {
+      alert("Fout bij toevoegen gebruiker");
+      console.error(err);
+    }
+  }
+
   return (
     <div className="p-4  bg-[#f3f3f4] w-full ">
       <h1 className="text-xl text-gray-500 font-bold tracking-tight">
         Voeg een medewerker toe
       </h1>
-      <div className="flex items-center py-4">
-        <form className="flex flex-col gap-11">
+      <form onSubmit={handleSubmit} className="flex items-center py-4">
+        <div className="flex flex-col gap-11">
           <div className="flex gap-11 items-end">
             <div className="flex flex-col">
               <label htmlFor="email" className="mb-1 font-light">
@@ -23,6 +38,7 @@ export default function Admin({ organisations }) {
                 type="email"
                 name="email"
                 id="email"
+                required
                 placeholder="E-mailadres"
                 className="admin-input-bar"
               />
@@ -32,11 +48,12 @@ export default function Admin({ organisations }) {
                 Functienaam
               </label>
               <select
+                name="role"
                 id="role"
-                className="admin-input-bar max-w-[130px]  bg-white"
+                className="admin-input-bar max-w-[130px] bg-white"
               >
-                <option>manager</option>
-                <option>medewerker</option>
+                <option value="manager">manager</option>
+                <option value="medewerker">medewerker</option>
               </select>
             </div>
           </div>
@@ -49,6 +66,7 @@ export default function Admin({ organisations }) {
                 type="password"
                 name="password"
                 id="password"
+                required
                 placeholder="wachtwoord"
                 className="admin-input-bar"
               />
@@ -62,13 +80,13 @@ export default function Admin({ organisations }) {
                 name="organisation"
                 value={selectedOrganisation}
                 onChange={handleChange}
-                className="admin-input-bar max-w-[130px]  bg-white"
                 required
+                className="admin-input-bar max-w-[130px] bg-white"
               >
                 <option value="" disabled>
                   Selecteer een organisatie
                 </option>
-                {orgList.map((org) => (
+                {organisations.map((org) => (
                   <option key={org.id} value={org.id}>
                     {org.title}
                   </option>
@@ -76,13 +94,16 @@ export default function Admin({ organisations }) {
               </select>
             </div>
           </div>
-        </form>
-        <div className=" relative left-[20%] max-w-[200px] flex flex-col gap-11">
-          <button className="shadow-lg  font-bold bg-blue-200 hover:bg-blue-400 h-[50px] w-[200px]">
+        </div>
+        <div className="relative left-[20%] max-w-[200px] flex flex-col gap-11">
+          <button
+            type="submit"
+            className="shadow-lg font-bold bg-blue-200 hover:bg-blue-400 h-[50px] w-[200px]"
+          >
             Toevoegen
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -41,12 +41,6 @@ export default function Organization({ profile, organisations }) {
         <h1 className="py-4 font-bold text-xl text-slate-800">
           Organiesatiebeheer
         </h1>
-
-        {isDirector ? (
-          <button className="text-blue-800 bg-gray-200">
-            organiesatie toevoegen
-          </button>
-        ) : null}
       </div>
       <div>
         {orgList.map((e, key) => (
@@ -64,8 +58,11 @@ export default function Organization({ profile, organisations }) {
           }
         />
 
-        <button type="submit" className="bg-green-500 p-4">
-          submit
+        <button
+          type="submit"
+          className="bg-gray-900 text-white font-medium px-5 py-2 rounded-md hover:bg-gray-800 transition-colors duration-200"
+        >
+          Organisatie toevoegen
         </button>
       </form>
     </div>

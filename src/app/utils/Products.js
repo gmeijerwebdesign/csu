@@ -6,10 +6,14 @@ export async function getProducts(profile) {
   const isCSU = profile?.organisation_id === 13;
   const table = isCSU ? "csu_inventory" : "organisation_inventory";
 
-  const { data: products, error } = await supabase
-    .from(table)
-    .select()
-    .order("id", { ascending: true });
+  let query = supabase.from(table).select().order("id", { ascending: true });
+
+  // 👇 Alleen filteren op organisation_id als het GEEN CSU is
+  if (!isCSU) {
+    query = query.eq("organisation_id", profile.organisation_id);
+  }
+
+  const { data: products, error } = await query;
 
   if (error) {
     console.error("Error fetching data:", error.message);
