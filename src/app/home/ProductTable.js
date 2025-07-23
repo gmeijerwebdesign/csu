@@ -1,7 +1,6 @@
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { BiTransfer } from "react-icons/bi";
-import { useState } from "react";
 
 export default function ProductTable({
   setSelectedTimeBox,

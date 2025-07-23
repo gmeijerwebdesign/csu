@@ -9,6 +9,7 @@ import Banner from "../blocks/banner";
 import Settings from "../settings/page";
 import Organization from "../organisation/page";
 import { createClient } from "../utils/supabase/client";
+import Admin from "../admin/page";
 
 export default function MainLayout({ user, products, profile, organisations }) {
   const [currentNav, setCurrentNav] = useState("home");
@@ -33,6 +34,8 @@ export default function MainLayout({ user, products, profile, organisations }) {
         return home;
       case "Settings":
         return <Settings />;
+      case "admin":
+        return <Admin organisations={organisations} />;
       case "Organisatiebeheer":
         return (
           <Organization

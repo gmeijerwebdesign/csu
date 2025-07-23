@@ -5,7 +5,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import { IoMdSettings } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { createClient } from "../utils/supabase/client";
-
+import { RiAdminFill } from "react-icons/ri";
 export default function SideBar({ handleNavigation, user, profile }) {
   const router = useRouter();
   const supabase = createClient();
@@ -35,9 +35,13 @@ export default function SideBar({ handleNavigation, user, profile }) {
     { label: "Uitloggen", value: "logout", icon: <MdOutlineLogout /> },
   ];
 
-  // if (session?.user?.role === "Manager") {
-  //   menuItems.push({ label: "admin", value: "admin", icon: <RiAdminFill /> });
-  // }
+  if (profile.organisation_id === 13) {
+    menuItems.push({
+      label: "admin",
+      value: "admin",
+      icon: <RiAdminFill />,
+    });
+  }
 
   return (
     <div className="hidden lg:flex  min-h-screen pt-11 w-[15%] bg-[#2f3c50] text-[#e4e8ee] font-medium text-[12px]">
