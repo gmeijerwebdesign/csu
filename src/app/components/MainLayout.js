@@ -10,7 +10,13 @@ import Settings from "../settings/page";
 import Organization from "../organisation/page";
 import Admin from "../admin/page";
 import Notes from "../notes/page.js";
-export default function MainLayout({ user, products, profile, organisations }) {
+export default function MainLayout({
+  user,
+  products,
+  profile,
+  organisations,
+  notifications,
+}) {
   const [currentNav, setCurrentNav] = useState("home");
 
   const handleNavigation = (nav) => {
@@ -33,7 +39,7 @@ export default function MainLayout({ user, products, profile, organisations }) {
       case "Settings":
         return <Settings />;
       case "notes":
-        return <Notes />;
+        return <Notes notifications={notifications} />;
       case "admin":
         return <Admin organisations={organisations} />;
       case "Organisatiebeheer":

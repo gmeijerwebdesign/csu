@@ -5,6 +5,7 @@ import { createClient } from "./utils/supabase/server";
 import MainLayout from "./components/MainLayout";
 import { getProducts } from "./utils/Products.js";
 import { getOrganisation } from "./utils/Organisations";
+import { getMessage } from "./api/message/receive-message/route";
 
 export default async function Main() {
   const supabase = await createClient();
@@ -33,7 +34,7 @@ export default async function Main() {
 
   // ✅ Geef profile door aan getProducts
   const products = await getProducts(profile);
-
+  const notifications = await getMessage(profile);
   const organisations = await getOrganisation();
 
   return (
@@ -42,6 +43,7 @@ export default async function Main() {
       profile={profile}
       products={products || []}
       organisations={organisations || []}
+      notifications={notifications}
     />
   );
 }

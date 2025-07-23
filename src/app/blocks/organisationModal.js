@@ -24,6 +24,7 @@ export default function OrganisationModal({
 
     if (!selectedOrganisation || !amount) return;
 
+    // perform transfer
     const res = await fetch("/api/transfer-product", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,6 +40,37 @@ export default function OrganisationModal({
       console.error("Transfer mislukt:", errText);
       return;
     }
+
+    // Send notification
+    const selectedOrg = orgList.find(
+      (org) => org.id === Number(selectedOrganisation)
+    );
+
+    const senderOrgId = selectedProduct.organisation_id;
+    const receiverOrgId = Number(selectedOrganisation);
+
+    // ✅ Verstuur bericht (voor CSU of afzender)
+    await fetch("/api/message/send-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        organisation_id: senderOrgId,
+        title: "Product verzonden",
+        message: `📦 ${amount}x ${selectedProduct.title} is verstuurd naar ${selectedOrg?.title}.`,
+      }),
+    });
+
+    // ✅ Ontvangstbericht (voor ontvanger)
+    await fetch("/api/message/send-message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        organisation_id: receiverOrgId,
+        title: "Product ontvangen",
+        message: `📥 ${amount}x ${selectedProduct.title} is ontvangen.`,
+      }),
+    });
+
     window.location.reload();
     setIsOpenOrg(false);
   };
