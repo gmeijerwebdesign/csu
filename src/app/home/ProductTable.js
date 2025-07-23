@@ -44,8 +44,7 @@ export default function ProductTable({
     setTimeout(() => setGlow(false), 2000);
   };
 
-  const isDirector =
-    profile?.role === "manager" || profile?.organisation_id === 13;
+  const isDirector = profile?.organisation_id === 13;
   return (
     <div>
       {/* Tabel voor grotere schermen */}
