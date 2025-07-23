@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
-export default function Notes(notifications) {
+export default function Notes({ notifications, OnDelete }) {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    setNotes(notifications.notifications);
+    setNotes(notifications);
   }, [notifications]);
 
   const handleDeleteMessage = async (noteId) => {
@@ -17,7 +17,7 @@ export default function Notes(notifications) {
 
     if (res.ok) {
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
-      alert("succes");
+      OnDelete(noteId);
     } else {
       console.error("Verwijderen mislukt");
     }

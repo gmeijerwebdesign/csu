@@ -1,7 +1,7 @@
 // components/MainLayout.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomeScreen from "../home/page";
 import SideBar from "../blocks/sidebar";
 import Header from "../blocks/header";
@@ -15,9 +15,22 @@ export default function MainLayout({
   products,
   profile,
   organisations,
-  notifications,
+  notifications: initialNotifications,
 }) {
   const [currentNav, setCurrentNav] = useState("home");
+  const [notifications, setNotifications] = useState(
+    initialNotifications || []
+  );
+
+  const [isNotification, setIsNotification] = useState(false);
+
+  useEffect(() => {
+    setIsNotification(notifications.length > 0);
+  }, [notifications]);
+
+  const handleDeleteNotification = (noteId) => {
+    setNotifications((prev) => prev.filter((note) => note.id !== noteId));
+  };
 
   const handleNavigation = (nav) => {
     setCurrentNav(nav);
@@ -39,7 +52,12 @@ export default function MainLayout({
       case "Settings":
         return <Settings />;
       case "notes":
-        return <Notes notifications={notifications} />;
+        return (
+          <Notes
+            notifications={notifications}
+            OnDelete={handleDeleteNotification}
+          />
+        );
       case "admin":
         return <Admin organisations={organisations} />;
       case "Organisatiebeheer":
@@ -67,6 +85,7 @@ export default function MainLayout({
           user={user}
           profile={profile}
           handleNavigation={handleNavigation}
+          isNotification={isNotification}
         />
         <Banner />
         <div className="p-4 bg-[rgb(243,243,244)] w-full ">
