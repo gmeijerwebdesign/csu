@@ -14,7 +14,7 @@ export default function FormModal({
     title: "",
     serialnumber: "",
     message: "",
-    amount: 0,
+    amount: 1,
     organisation_id: profile.organisation_id,
   });
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function FormModal({
         title: e.title || "",
         serialnumber: e.serialnumber || "",
         message: e.message || "",
-        amount: e.amount || 0,
+        amount: e.amount || 1,
         organisation_id: profile.organisation_id,
       });
     } else if (mode === "add") {
@@ -32,7 +32,7 @@ export default function FormModal({
         title: "",
         serialnumber: "",
         message: "",
-        amount: 0,
+        amount: 1,
         organisation_id: profile.organisation_id,
       });
     }
@@ -177,7 +177,7 @@ export default function FormModal({
             value={formData.amount}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
-            min={0}
+            min={1}
             required
           />
         </div>

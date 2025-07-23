@@ -21,13 +21,9 @@ export default function SideBar({ handleNavigation, user, profile }) {
 
   const menuItems = [
     { label: "Inventarisadministratie", value: "home", icon: <SlCalender /> },
+
     {
-      label: "Organisatiebeheer",
-      value: "Organisatiebeheer",
-      icon: <FaCircleInfo />,
-    },
-    {
-      label: "Settings",
+      label: "Instellingen",
       value: "Settings",
       icon: <IoMdSettings />,
     },
@@ -36,11 +32,18 @@ export default function SideBar({ handleNavigation, user, profile }) {
   ];
 
   if (profile.organisation_id === 13) {
-    menuItems.push({
-      label: "admin",
-      value: "admin",
-      icon: <RiAdminFill />,
-    });
+    menuItems.push(
+      {
+        label: "admin",
+        value: "admin",
+        icon: <RiAdminFill />,
+      },
+      {
+        label: "Organisatiebeheer",
+        value: "Organisatiebeheer",
+        icon: <FaCircleInfo />,
+      }
+    );
   }
 
   return (

@@ -6,8 +6,9 @@ export async function POST(req) {
   const supabase = await createClient();
   const body = await req.json();
 
-  const {  title, serialnumber, message, amount, organisation_id } =
-    body;
+  const { title, serialnumber, message, amount, organisation_id } = body;
+
+  const messageToInsert = message?.trim() === "" ? "n.v.t" : message;
 
   const isCSU = organisation_id === 13;
   const table = isCSU ? "csu_inventory" : "organisation_inventory";
@@ -15,7 +16,13 @@ export async function POST(req) {
 
   const { data, error } = await supabase
     .from(table)
-    .insert({ title, serialnumber, message, amount, organisation_id })
+    .insert({
+      title,
+      serialnumber,
+      message: messageToInsert,
+      amount,
+      organisation_id,
+    })
     .select();
 
   if (error) {

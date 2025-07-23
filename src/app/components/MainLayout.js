@@ -8,12 +8,10 @@ import Header from "../blocks/header";
 import Banner from "../blocks/banner";
 import Settings from "../settings/page";
 import Organization from "../organisation/page";
-import { createClient } from "../utils/supabase/client";
 import Admin from "../admin/page";
-
+import Notes from "../notes/page.js";
 export default function MainLayout({ user, products, profile, organisations }) {
   const [currentNav, setCurrentNav] = useState("home");
-  const supabase = createClient();
 
   const handleNavigation = (nav) => {
     setCurrentNav(nav);
@@ -34,6 +32,8 @@ export default function MainLayout({ user, products, profile, organisations }) {
         return home;
       case "Settings":
         return <Settings />;
+      case "notes":
+        return <Notes />;
       case "admin":
         return <Admin organisations={organisations} />;
       case "Organisatiebeheer":
@@ -57,7 +57,11 @@ export default function MainLayout({ user, products, profile, organisations }) {
         profile={profile}
       />
       <div className="flex flex-col w-full max-w-full">
-        <Header user={user} profile={profile} />
+        <Header
+          user={user}
+          profile={profile}
+          handleNavigation={handleNavigation}
+        />
         <Banner />
         <div className="p-4 bg-[rgb(243,243,244)] w-full ">
           {displayScreen(currentNav)}

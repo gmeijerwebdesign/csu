@@ -1,6 +1,8 @@
 import { IoMdMail } from "react-icons/io";
 import { FaBell } from "react-icons/fa6";
-export default function Header({ user, profile }) {
+import { useState } from "react";
+export default function Header({ user, profile, handleNavigation }) {
+  const [isNotification, setIsNotification] = useState(true);
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -24,8 +26,10 @@ export default function Header({ user, profile }) {
           </span>
         </p>
 
-        <IoMdMail className="text-[17px]" />
-        <FaBell className="text-[17px]" />
+        <FaBell
+          className={`text-[17px] ${isNotification ? "text-amber-500" : ""}`}
+          onClick={() => handleNavigation("notes")}
+        />
       </div>
     </div>
   );
