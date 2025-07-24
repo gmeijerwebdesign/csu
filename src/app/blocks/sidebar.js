@@ -71,32 +71,46 @@ export default function SideBar({
       </div>
 
       {/* Mobile overlay sidebar */}
-      {isSidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-[9999] bg-black bg-opacity-60">
-          <div className="w-[100%] bg-[#2f3c50] h-full p-4 flex flex-col  text-white">
-            <div className="flex items-center p-5">
-              <p className="text-sm text-center mb-6">{user?.email}</p>
-              <button
-                className="text-right w-full text-white text-lg mb-4"
-                onClick={() => setIsSidebarOpen(false)}
-              >
-                ✕
-              </button>
-            </div>
 
-            {menuItems.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 hover:bg-[#25333f] px-4 py-2 rounded cursor-pointer"
-                onClick={() => handleClick(item.value)}
-              >
-                {item.icon}
-                <p>{item.label}</p>
-              </div>
-            ))}
+      <div
+        className={`lg:hidden fixed inset-0 z-[9999] flex transition-opacity duration-300 ${
+          isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-black bg-opacity-60"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+
+        {/* Sliding panel */}
+        <div
+          className={`relative bg-[#2f3c50] text-white w-[100%] h-full transform transition-transform duration-500 ease-in-out ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex items-center justify-between p-4">
+            <p className="text-sm">{user?.email}</p>
+            <button
+              className="text-white text-xl"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              ✕
+            </button>
           </div>
+
+          {menuItems.map((item, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-3 hover:bg-[#25333f] px-4 py-2 rounded cursor-pointer"
+              onClick={() => handleClick(item.value)}
+            >
+              {item.icon}
+              <p>{item.label}</p>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </>
   );
 }

@@ -44,6 +44,9 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.gradient {
+  background: linear-gradient(65deg, #0dff00, #138000);
+}
 
 .animate-glow {
   animation: glow 1.5s ease-out;
