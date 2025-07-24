@@ -1,6 +1,9 @@
+import { useEffect, useRef, useState } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { BiTransfer } from "react-icons/bi";
+import { BsThreeDots } from "react-icons/bs";
+import MobileProductTable from "../components/mobileProductTable";
 
 export default function ProductTable({
   setSelectedTimeBox,
@@ -14,11 +17,22 @@ export default function ProductTable({
   glow,
   setGlow,
 }) {
+  const [openActionProductId, setOpenActionProductId] = useState(null);
+  const actionRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize(); // Check bij mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleDelete = async (product_id) => {
-    if (!product_id) {
-      console.error("Geen product_id beschikbaar!");
-      return;
-    }
+    if (!product_id) return console.error("Geen product_id beschikbaar!");
 
     const res = await fetch("/api/delete-product", {
       method: "POST",
@@ -34,9 +48,6 @@ export default function ProductTable({
       return;
     }
 
-    console.log("Succesvol verwijderd");
-
-    // ✅ verwijder uit lijst
     setProducts((prev) =>
       prev.filter((product) => product.product_id !== product_id)
     );
@@ -45,165 +56,172 @@ export default function ProductTable({
   };
 
   const isDirector = profile?.organisation_id === 13;
+
+  // Close action modal when clicked outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (actionRef.current && !actionRef.current.contains(e.target)) {
+        setOpenActionProductId(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div>
-      {/* Tabel voor grotere schermen */}
-      <div
-        className={`hidden md:block overflow-x-auto shadow-md ${glow} ? "animate-glow" : ""`}
-      >
-        <table className="min-w-full border border-gray-200 shadow rounded-lg">
-          <thead>
-            <tr>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                Product ID
-              </th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                Naam
-              </th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                Serienummer
-              </th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                Opmerking
-              </th>
-              <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-                Aantal
-              </th>
-              <th className="px-4 py-2 text-center text-sm font-semibold text-gray-600">
-                Actie
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* product toevoegen als manager */}
-            {isDirector ? (
-              <tr className="border-t hover:bg-gray-50">
-                <td
-                  className="px-4 py-2 text-sm text-gray-700"
-                  colSpan={5}
-                ></td>
-                <td className="px-4 py-2 text-center text-green-700">
-                  <FaPlus
-                    className="cursor-pointer inline-block"
-                    onClick={() => {
-                      setSelectedTimeBox(null); // Geen geselecteerd product
-                      setMode("add");
-                      setIsOpen(true);
-                    }}
-                  />
-                </td>
-              </tr>
-            ) : null}
-
-            {products.map((product) => (
-              <tr
-                key={product.product_id}
-                className={`border-t ${
-                  glow ? "animate-glow" : ""
-                } hover:bg-gray-50`}
-              >
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.product_id}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.title}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.serialnumber}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.message}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {product.amount}
-                </td>
-                <td className="px-4 py-2 text-center ">
-                  <button className="p-1 text-blue-500 hover:text-blue-700 transition duration-200">
-                    <FiEdit
-                      size={15}
-                      className="cursor-pointer "
-                      onClick={() => {
-                        setSelectedTimeBox({
-                          entry: product,
-                          index: product.product_id,
-                        });
-                        setMode("edit");
-                        setIsOpen(true);
-                      }}
-                    />
-                  </button>
-                  <button className="text-red-500 hover:text-red-700 transition duration-200">
-                    <FaTrash
-                      size={15}
-                      className="cursor-pointer"
-                      onClick={() => handleDelete(product.product_id)}
-                    />
-                  </button>
-                  {isDirector ? (
-                    <button className=" hover:text-green-700 transition duration-200">
-                      <BiTransfer
-                        size={15}
-                        className="cursor-pointer"
+      {isMobile ? (
+        <MobileProductTable
+          products={products}
+          setSelectedTimeBox={setSelectedTimeBox}
+          setIsOpen={setIsOpen}
+          setMode={setMode}
+          setProducts={setProducts}
+          profile={profile}
+          setGlow={setGlow}
+          glow={glow}
+          setIsOpenOrg={setIsOpenOrg}
+          setSelectedProduct={setSelectedProduct}
+        />
+      ) : (
+        <div
+          className={`h-full  shadow-md rounded-lg border border-gray-200 ${
+            glow ? "animate-glow" : ""
+          }`}
+        >
+          <div className="overflow-visible max-h-full">
+            <table className="min-w-full border border-gray-200 shadow rounded-lg">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                    Product ID
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                    Naam
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                    Serienummer
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                    Opmerking
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                    Aantal
+                  </th>
+                  <th className="px-4 py-2 text-center text-sm font-semibold text-gray-600">
+                    Actie
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* product toevoegen als director */}
+                {isDirector && (
+                  <tr className="border-t hover:bg-gray-50">
+                    <td
+                      className="px-4 py-2 text-sm text-gray-700"
+                      colSpan={5}
+                    ></td>
+                    <td className="px-4 py-2 text-center text-green-700">
+                      <FaPlus
+                        className="cursor-pointer inline-block"
                         onClick={() => {
-                          setSelectedProduct(product);
-                          setIsOpenOrg(true);
+                          setSelectedTimeBox(null);
+                          setMode("add");
+                          setIsOpen(true);
                         }}
                       />
-                    </button>
-                  ) : null}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    </td>
+                  </tr>
+                )}
 
-      {/* Kaarten voor mobiele schermen */}
-      <div className="md:hidden space-y-4">
-        {products.map((product) => (
-          <div
-            key={product.product_id}
-            className="border productform border-gray-200 rounded-lg p-4 shadow-sm"
-          >
-            <div className="mb-2">
-              <span className="font-semibold text-gray-600">Product ID:</span>{" "}
-              {product.product_id}
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold text-gray-600">Naam:</span>{" "}
-              {product.title}
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold text-gray-600">Serienummer:</span>{" "}
-              {product.serialnumber}
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold text-gray-600">Opmerking:</span>{" "}
-              {product.message}
-            </div>
-            <div className="mb-2">
-              <span className="font-semibold text-gray-600">Aantal:</span>{" "}
-              {product.amount}
-            </div>
-            <div className="flex justify-end">
-              <button className="text-blue-500 hover:text-blue-700 transition duration-200">
-                <FiEdit
-                  size={20}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setSelectedTimeBox({
-                      entry: product,
-                      index: product.product_id,
-                    });
-                    setMode("edit");
-                    setIsOpen(true);
-                  }}
-                />
-              </button>
-            </div>
+                {products.map((product) => (
+                  <tr
+                    key={product.product_id}
+                    className={`border-t relative ${
+                      glow ? "animate-glow" : ""
+                    } hover:bg-gray-50`}
+                  >
+                    <td className="px-4 py-2 text-sm text-gray-700">
+                      {product.product_id}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-700">
+                      {product.title}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-700">
+                      {product.serialnumber}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-700">
+                      {product.message}
+                    </td>
+                    <td className="px-4 py-2 text-sm text-gray-700">
+                      {product.amount}
+                    </td>
+                    <td className="px-4 py-2 text-center relative">
+                      <div className="flex justify-center relative">
+                        <BsThreeDots
+                          className="cursor-pointer text-gray-600 hover:text-gray-800 transition"
+                          onClick={() =>
+                            setOpenActionProductId((prev) =>
+                              prev === product.product_id
+                                ? null
+                                : product.product_id
+                            )
+                          }
+                        />
+
+                        {openActionProductId === product.product_id && (
+                          <div
+                            ref={actionRef}
+                            className={`absolute z-[9999] ${
+                              profile.organisation_id === 13
+                                ? "-top-[125px]"
+                                : "-top-[90px] right-11"
+                            } bg-white border border-gray-200 rounded-md shadow-lg py-2 w-32 text-sm`}
+                          >
+                            <button
+                              onClick={() => {
+                                setSelectedTimeBox({
+                                  entry: product,
+                                  index: product.product_id,
+                                });
+                                setMode("edit");
+                                setIsOpen(true);
+                                setOpenActionProductId(null);
+                              }}
+                              className="w-full py-2 flex items-center justify-center text-blue-600 hover:bg-blue-50"
+                            >
+                              <FiEdit className="inline mr-2" /> Bewerken
+                            </button>
+                            <button
+                              onClick={() => handleDelete(product.product_id)}
+                              className="w-full  py-2 flex items-center justify-center text-red-600 hover:bg-red-50"
+                            >
+                              <FaTrash className="inline mr-2" /> Verwijderen
+                            </button>
+                            {isDirector && (
+                              <button
+                                onClick={() => {
+                                  setSelectedProduct(product);
+                                  setIsOpenOrg(true);
+                                  setOpenActionProductId(null);
+                                }}
+                                className="w-full  py-2 flex items-center justify-center text-green-600 hover:bg-green-50"
+                              >
+                                <BiTransfer className="inline mr-2" />{" "}
+                                Overdragen
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

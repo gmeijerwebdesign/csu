@@ -17,6 +17,8 @@ export default function MainLayout({
   organisations,
   notifications: initialNotifications,
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const [currentNav, setCurrentNav] = useState("home");
   const [notifications, setNotifications] = useState(
     initialNotifications || []
@@ -79,13 +81,17 @@ export default function MainLayout({
         user={user}
         handleNavigation={handleNavigation}
         profile={profile}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
       />
+
       <div className="flex flex-col w-full max-w-full">
         <Header
           user={user}
           profile={profile}
           handleNavigation={handleNavigation}
           isNotification={isNotification}
+          setIsSidebarOpen={setIsSidebarOpen}
         />
         <Banner />
         <div className="p-4 bg-[rgb(243,243,244)] w-full ">

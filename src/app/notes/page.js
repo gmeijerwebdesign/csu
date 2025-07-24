@@ -25,13 +25,21 @@ export default function Notes({ notifications, OnDelete }) {
 
   return (
     <div>
+      <div className="flex justify-between">
+        <h1 className="py-4 font-bold text-xl text-slate-800">
+          Organiesatiebeheer
+        </h1>
+      </div>
       {notes.length !== 0
         ? notes.map((note, index) => (
             <div key={index} className="flex items-center gap-11">
-              <h1>{note.title}</h1>
-              <p>{note.message}</p>
+              <h1 className="font-semibold">{note.title}</h1>
+              <p className="text-gray-600">{note.message}</p>
 
-              <FaTrash onClick={() => handleDeleteMessage(note.id)} />
+              <FaTrash
+                onClick={() => handleDeleteMessage(note.id)}
+                className="text-red-500 cursor-pointer"
+              />
             </div>
           ))
         : null}

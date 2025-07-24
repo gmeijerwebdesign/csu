@@ -9,6 +9,7 @@ export async function POST(req) {
   const { title, serialnumber, message, amount, organisation_id } = body;
 
   const messageToInsert = message?.trim() === "" ? "n.v.t" : message;
+  const serialNumberToInsert = serialnumber.toUpperCase();
 
   const isCSU = organisation_id === 13;
   const table = isCSU ? "csu_inventory" : "organisation_inventory";
@@ -18,7 +19,7 @@ export async function POST(req) {
     .from(table)
     .insert({
       title,
-      serialnumber,
+      serialnumber: serialNumberToInsert,
       message: messageToInsert,
       amount,
       organisation_id,

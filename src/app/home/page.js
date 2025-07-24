@@ -25,6 +25,7 @@ export default function HomeScreen({
         <h1 className="py-4 font-bold text-xl text-slate-800">
           Inventariesatiebeheer
         </h1>
+
         <ProductTable
           products={products}
           setSelectedTimeBox={setSelectedTimeBox}
