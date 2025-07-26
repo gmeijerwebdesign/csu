@@ -20,6 +20,7 @@ export default function ProductTable({
   const [openActionProductId, setOpenActionProductId] = useState(null);
   const actionRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [checkedRows, setCheckedRows] = useState({});
 
   useEffect(() => {
     const handleResize = () => {
@@ -68,6 +69,16 @@ export default function ProductTable({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const handleCheckBox = (product, checked) => {
+    setCheckedRows((prev) => ({
+      ...prev,
+      [product]: checked,
+    }));
+  };
+  useEffect(() => {
+    console.log("✅ Geselecteerde rows:", checkedRows);
+  }, [checkedRows]);
+
   return (
     <div>
       {isMobile ? (
@@ -93,6 +104,10 @@ export default function ProductTable({
             <table className="min-w-full border border-gray-200 shadow rounded-lg">
               <thead>
                 <tr>
+                  <th className="px-4 py-2">
+                    <input type="checkbox" disabled />{" "}
+                    {/* eventueel select all later */}
+                  </th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
                     Product ID
                   </th>
@@ -119,7 +134,7 @@ export default function ProductTable({
                   <tr className="border-t hover:bg-gray-50">
                     <td
                       className="px-4 py-2 text-sm text-gray-700"
-                      colSpan={5}
+                      colSpan={6}
                     ></td>
                     <td className="px-4 py-2 text-center text-green-700">
                       <FaPlus
@@ -141,6 +156,15 @@ export default function ProductTable({
                       glow ? "animate-glow" : ""
                     } hover:bg-gray-50`}
                   >
+                    <td className="px-4 py-2 text-sm text-center text-gray-700">
+                      <input
+                        type="checkbox"
+                        checked={!!checkedRows[product.product_id]}
+                        onChange={(e) =>
+                          handleCheckBox(product.product_id, e.target.checked)
+                        }
+                      />
+                    </td>
                     <td className="px-4 py-2 text-sm text-gray-700">
                       {product.product_id}
                     </td>
