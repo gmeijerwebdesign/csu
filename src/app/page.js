@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
 import MainLayout from "./components/MainLayout";
-import { getProducts } from "./utils/Products.js";
 import { getOrganisation } from "./utils/Organisations";
 import { getMessage } from "./api/message/receive-message/route";
 
@@ -32,8 +31,6 @@ export default async function Main() {
     redirect("/login"); // of een foutpagina
   }
 
-  // ✅ Geef profile door aan getProducts
-  const products = await getProducts(profile);
   const notifications = await getMessage(profile);
   const organisations = await getOrganisation();
 
@@ -41,7 +38,6 @@ export default async function Main() {
     <MainLayout
       user={user}
       profile={profile}
-      products={products || []}
       organisations={organisations || []}
       notifications={notifications}
     />

@@ -54,7 +54,7 @@ export default function SideBar({
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex min-h-screen pt-11 w-[15%] bg-[#2f3c50] text-[#e4e8ee] font-medium text-[12px]">
+      <div className="hidden lg:flex min-h-screen pt-11 w-[15%] bg-[#161c26] text-[#e4e8ee] font-medium text-[12px]">
         <div className="flex flex-col gap-7 w-full">
           <p className="text-center">{user?.email}</p>
           {menuItems.map((item, index) => (
