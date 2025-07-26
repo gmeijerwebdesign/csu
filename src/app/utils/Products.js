@@ -2,7 +2,7 @@
 import { createClient } from "./supabase/client";
 
 export async function getProducts(profile, filters = {}) {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   const isCSU = profile?.organisation_id === 13;
   const table = isCSU ? "csu_inventory" : "organisation_inventory";
@@ -12,19 +12,15 @@ export async function getProducts(profile, filters = {}) {
   if (!isCSU) {
     query = query.eq("organisation_id", profile.organisation_id);
   }
+  if (filters.productTitleOrder) {
+    query = query.ilike("title", `%${filters.productTitleOrder}%`);
+  }
 
   // 🔽 Sorteer op filters
   if (filters.amountOrder) {
     query = query.order("amount", { ascending: filters.amountOrder === "asc" });
   } else {
     query = query.order("id", { ascending: true }); // fallback
-  }
-
-  // eventueel extra sorting op "message" kolom
-  if (filters.messageOrder) {
-    query = query.order("message", {
-      ascending: filters.messageOrder === "asc",
-    });
   }
 
   const { data: products, error } = await query;

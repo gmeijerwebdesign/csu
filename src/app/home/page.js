@@ -19,11 +19,14 @@ export default function HomeScreen({ profile, organisations }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const [amountOrder, setAmountOrder] = useState("asc");
-  const [messageOrder, setMessageOrder] = useState("asc");
+  const [productTitleOrder, setProductTitleOrder] = useState("");
 
   useEffect(() => {
     const fetchInitial = async () => {
-      const data = await getProducts(profile, { amountOrder, messageOrder });
+      const data = await getProducts(profile, {
+        amountOrder,
+        productTitleOrder,
+      });
       setProducts(data);
       setIsLoading(false);
     };
@@ -35,17 +38,16 @@ export default function HomeScreen({ profile, organisations }) {
     setAmountOrder(newOrder);
     const data = await getProducts(profile, {
       amountOrder: newOrder,
-      messageOrder,
+      productTitleOrder,
     });
     setProducts(data);
   };
 
-  const toggleMessageSort = async () => {
-    const newOrder = messageOrder === "asc" ? "desc" : "asc";
-    setMessageOrder(newOrder);
+  const handleTitleSortSubmit = async (e) => {
+    e.preventDefault();
     const data = await getProducts(profile, {
       amountOrder,
-      messageOrder: newOrder,
+      productTitleOrder,
     });
     setProducts(data);
   };
@@ -57,9 +59,10 @@ export default function HomeScreen({ profile, organisations }) {
       </h1>
       <Filters
         amountOrder={amountOrder}
-        messageOrder={messageOrder}
         onAmountSortToggle={toggleAmountSort}
-        onMessageSortToggle={toggleMessageSort}
+        productTitleOrder={productTitleOrder}
+        setProductTitleOrder={setProductTitleOrder}
+        onTitleSortSubmit={handleTitleSortSubmit}
       />
 
       <ProductTable
