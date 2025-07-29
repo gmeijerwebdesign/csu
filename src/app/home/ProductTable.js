@@ -16,45 +16,23 @@ export default function ProductTable({
   profile,
   glow,
   setGlow,
+  handleDelete,
+  checkedRows,
+  setCheckedRows,
 }) {
   const [openActionProductId, setOpenActionProductId] = useState(null);
   const actionRef = useRef(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [checkedRows, setCheckedRows] = useState({});
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize(); 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handleDelete = async (product_id) => {
-    if (!product_id) return console.error("Geen product_id beschikbaar!");
-
-    const res = await fetch("/api/delete-product", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        product_id,
-        organisation_id: profile.organisation_id,
-      }),
-    });
-
-    if (!res.ok) {
-      console.error("Fout:", await res.text());
-      return;
-    }
-
-    setProducts((prev) =>
-      prev.filter((product) => product.product_id !== product_id)
-    );
-    setGlow(true);
-    setTimeout(() => setGlow(false), 2000);
-  };
 
   const isDirector = profile?.organisation_id === 13;
 
@@ -69,14 +47,26 @@ export default function ProductTable({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleCheckBox = (product, checked) => {
-    setCheckedRows((prev) => ({
-      ...prev,
-      [product]: checked,
-    }));
+  const handleCheckBox = (product_id, organisation_id, checked) => {
+    setCheckedRows((prev) => {
+      const updated = { ...prev };
+      if (checked) {
+        updated[product_id] = {
+          product_id: product_id,
+          organisation_id: organisation_id,
+        };
+      } else {
+        delete updated[product_id];
+      }
+      return updated;
+    });
   };
+
   useEffect(() => {
-    console.log("✅ Geselecteerde rows:", checkedRows);
+    const e = Object.values(checkedRows);
+    for (const { product_id } of e) {
+      console.log("✅ Geselecteerde rows:", product_id);
+    }
   }, [checkedRows]);
 
   return (
@@ -106,7 +96,6 @@ export default function ProductTable({
                 <tr>
                   <th className="px-4 py-2">
                     <input type="checkbox" disabled />{" "}
-                   
                   </th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
                     Product ID
@@ -161,7 +150,11 @@ export default function ProductTable({
                         type="checkbox"
                         checked={!!checkedRows[product.product_id]}
                         onChange={(e) =>
-                          handleCheckBox(product.product_id, e.target.checked)
+                          handleCheckBox(
+                            product.product_id,
+                            product.organisation_id,
+                            e.target.checked
+                          )
                         }
                       />
                     </td>

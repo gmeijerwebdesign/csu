@@ -6,10 +6,12 @@ import FormModal from "../blocks/formModal";
 import OrganisationModal from "../blocks/organisationModal";
 import Filters from "./filters";
 import { getProducts } from "../utils/Products";
+import Popup from "../components/popup";
 
 export default function HomeScreen({ profile, organisations }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenOrg, setIsOpenOrg] = useState(false);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [selectedTimeBox, setSelectedTimeBox] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mode, setMode] = useState(null);
@@ -20,6 +22,8 @@ export default function HomeScreen({ profile, organisations }) {
 
   const [amountOrder, setAmountOrder] = useState("asc");
   const [productTitleOrder, setProductTitleOrder] = useState("");
+
+  const [checkedRows, setCheckedRows] = useState({});
 
   useEffect(() => {
     const fetchInitial = async () => {
@@ -52,6 +56,38 @@ export default function HomeScreen({ profile, organisations }) {
     setProducts(data);
   };
 
+  const handleDelete = async (product_id) => {
+    if (!product_id) return console.error("Geen product_id beschikbaar!");
+
+    const res = await fetch("/api/delete-product", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        product_id,
+        organisation_id: profile.organisation_id,
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("Fout:", await res.text());
+      return;
+    }
+
+    setProducts((prev) =>
+      prev.filter((product) => product.product_id !== product_id)
+    );
+    setGlow(true);
+    setTimeout(() => setGlow(false), 2000);
+  };
+
+  const handleDeleteChecked = async () => {
+    const e = Object.values(checkedRows);
+    for (const { product_id } of e) {
+      await handleDelete(product_id);
+    }
+    setCheckedRows({});
+  };
+
   return (
     <div>
       <h1 className="py-4 font-bold text-xl text-slate-800">
@@ -63,6 +99,9 @@ export default function HomeScreen({ profile, organisations }) {
         productTitleOrder={productTitleOrder}
         setProductTitleOrder={setProductTitleOrder}
         onTitleSortSubmit={handleTitleSortSubmit}
+        checkedRows={checkedRows}
+        setCheckedRows={setCheckedRows}
+        setIsOpenPopup={setIsOpenPopup}
       />
 
       <ProductTable
@@ -76,6 +115,9 @@ export default function HomeScreen({ profile, organisations }) {
         glow={glow}
         setIsOpenOrg={setIsOpenOrg}
         setSelectedProduct={setSelectedProduct}
+        handleDelete={handleDelete}
+        checkedRows={checkedRows}
+        setCheckedRows={setCheckedRows}
       />
 
       {isOpenOrg && (
@@ -84,6 +126,15 @@ export default function HomeScreen({ profile, organisations }) {
             setIsOpenOrg={setIsOpenOrg}
             organisations={organisations}
             selectedProduct={selectedProduct}
+          />
+        </div>
+      )}
+
+      {isOpenPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <Popup
+            setIsOpenPopup={setIsOpenPopup}
+            handleDelete={handleDeleteChecked}
           />
         </div>
       )}
