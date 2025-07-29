@@ -27,7 +27,7 @@ export default function ProductTable({
       setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize(); // Check bij mount
+    handleResize(); 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -106,7 +106,7 @@ export default function ProductTable({
                 <tr>
                   <th className="px-4 py-2">
                     <input type="checkbox" disabled />{" "}
-                    {/* eventueel select all later */}
+                   
                   </th>
                   <th className="px-4 py-2 text-left text-sm font-semibold text-gray-600">
                     Product ID

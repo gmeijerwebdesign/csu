@@ -17,7 +17,7 @@ export async function addUser(formData) {
       email,
       password,
       options: {
-        // Optioneel: stuur direct een bevestigingsmail
+    
         emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
       },
     }
@@ -43,5 +43,5 @@ export async function addUser(formData) {
     throw new Error("Kan profiel niet aanmaken");
   }
 
-  revalidatePath("/admin"); // of waar je lijst van users is
+  revalidatePath("/admin"); 
 }

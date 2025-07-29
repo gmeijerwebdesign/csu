@@ -1,4 +1,3 @@
-// app/api/add-product/route.js
 
 import { createClient } from "../../utils/supabase/server";
 

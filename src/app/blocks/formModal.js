@@ -10,7 +10,6 @@ export default function FormModal({
 }) {
   const e = mode === "edit" ? selectedTimeBox?.entry : null;
   const [formData, setFormData] = useState({
-    // product_id: 0,
     title: "",
     serialnumber: "",
     message: "",
@@ -20,7 +19,7 @@ export default function FormModal({
   useEffect(() => {
     if (mode === "edit" && e) {
       setFormData({
-        // product_id: e.product_id,
+    
         title: e.title || "",
         serialnumber: e.serialnumber || "",
         message: e.message || "",
@@ -64,7 +63,7 @@ export default function FormModal({
 
     if (mode === "add") {
       endpoint = "/api/create-product";
-      // GEEN product_id meesturen; Supabase doet dat automatisch
+
     }
 
     const res = await fetch(endpoint, {
@@ -81,7 +80,7 @@ export default function FormModal({
     const jsonResult = await res.json();
     const newProduct = jsonResult.data[0];
     if (mode === "add") {
-      setProducts((prev) => [...prev, newProduct]); // ✅ voeg toe
+      setProducts((prev) => [...prev, newProduct]); 
     }
 
     if (mode === "edit") {
@@ -89,7 +88,7 @@ export default function FormModal({
         prev.map((p) =>
           p.product_id === newProduct.product_id ? newProduct : p
         )
-      ); // ✅ werk bij
+      ); 
     }
 
     setIsOpen(false);

@@ -9,7 +9,7 @@ export default function OrganisationModal({
   const [selectedOrganisation, setSelectedOrganisation] = useState("");
   const [orgList, setOrgList] = useState(organisations || []);
 
-  const [amount, setAmount] = useState(1); // default = 1
+  const [amount, setAmount] = useState(1); 
 
   const handleAmountChange = (e) => {
     setAmount(Number(e.target.value));
@@ -41,7 +41,7 @@ export default function OrganisationModal({
       return;
     }
 
-    // Send notification
+   
     const selectedOrg = orgList.find(
       (org) => org.id === Number(selectedOrganisation)
     );
@@ -49,7 +49,7 @@ export default function OrganisationModal({
     const senderOrgId = selectedProduct.organisation_id;
     const receiverOrgId = Number(selectedOrganisation);
 
-    // ✅ Verstuur bericht (voor CSU of afzender)
+    //  Verstuur bericht (voor CSU of afzender)
     await fetch("/api/message/send-message", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -60,7 +60,7 @@ export default function OrganisationModal({
       }),
     });
 
-    // ✅ Ontvangstbericht (voor ontvanger)
+    //  Ontvangstbericht (voor ontvanger)
     await fetch("/api/message/send-message", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

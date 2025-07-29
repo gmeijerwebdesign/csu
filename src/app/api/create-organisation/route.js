@@ -1,4 +1,4 @@
-// app/api/create-organisation/route.js
+
 
 import { createClient } from "../../utils/supabase/server";
 

@@ -22,14 +22,14 @@ export async function login(formData) {
 
   const user = authResult.session.user;
 
-  // 🕵️ Check of profiel bestaat
+  // Check of profiel bestaat
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
     .select("id")
     .eq("id", user.id)
     .single();
 
-  // 🧱 Als profiel niet bestaat, maak aan
+  // Als profiel niet bestaat, maak aan
   if (profileError && profileError.code === "PGRST116") {
     await supabase.from("profiles").insert({
       id: user.id,
@@ -59,7 +59,7 @@ export async function signup(formData) {
 
   const user = signupResult.user;
 
-  // ➕ Profiel aanmaken
+  // Profiel aanmaken
   await supabase.from("profiles").insert({
     id: user.id,
     organisation_id: 2,

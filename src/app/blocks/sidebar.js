@@ -48,7 +48,7 @@ export default function SideBar({
     } else {
       handleNavigation(value);
     }
-    setIsSidebarOpen(false); // Sluit na klikken
+    setIsSidebarOpen(false);
   };
 
   return (

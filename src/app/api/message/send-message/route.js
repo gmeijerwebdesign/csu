@@ -1,4 +1,3 @@
-// app/message/send-message/route.js
 
 import { createClient } from "../../../utils/supabase/server";
 
