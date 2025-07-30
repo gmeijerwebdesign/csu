@@ -2,14 +2,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import HomeScreen from "../home/page";
-import SideBar from "../blocks/sidebar";
-import Header from "../blocks/header";
-import Banner from "../blocks/banner";
-import Settings from "../settings/page";
-import Organization from "../organisation/page";
-import Admin from "../admin/page";
-import Notes from "../notes/page.js";
+import HomeScreen from "./pages/home/page";
+import SideBar from "./components/sidebar";
+import Header from "./blocks/header";
+import Banner from "./blocks/banner";
+import Settings from "./pages/settings/page";
+import Organization from "./pages/organisation/page";
+import Admin from "./pages/admin/page";
+import Notes from "./pages/notes/page.js";
 export default function MainLayout({
   user,
   products,

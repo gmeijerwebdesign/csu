@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductTable from "./ProductTable";
-import FormModal from "../blocks/formModal";
-import OrganisationModal from "../blocks/organisationModal";
+import FormModal from "../../components/formModal";
+import OrganisationModal from "../../components/organisationModal";
 import Filters from "./filters";
-import { getProducts } from "../utils/Products";
-import Popup from "../components/popup";
+import { deleteProduct, getProducts } from "../../utils/Products";
+import Popup from "../../blocks/popup";
 
 export default function HomeScreen({ profile, organisations }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,19 +59,11 @@ export default function HomeScreen({ profile, organisations }) {
   const handleDelete = async (product_id) => {
     if (!product_id) return console.error("Geen product_id beschikbaar!");
 
-    const res = await fetch("/api/delete-product", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        product_id,
-        organisation_id: profile.organisation_id,
-      }),
-    });
-
-    if (!res.ok) {
-      console.error("Fout:", await res.text());
-      return;
-    }
+    const { success } = await deleteProduct(
+      product_id,
+      profile.organisation_id
+    );
+    if (!success) return;
 
     setProducts((prev) =>
       prev.filter((product) => product.product_id !== product_id)
@@ -93,7 +85,7 @@ export default function HomeScreen({ profile, organisations }) {
       <h1 className="py-4 font-bold text-xl text-slate-800">
         Inventariesatiebeheer
       </h1>
-      {/* <Filters
+      <Filters
         amountOrder={amountOrder}
         onAmountSortToggle={toggleAmountSort}
         productTitleOrder={productTitleOrder}
@@ -102,7 +94,7 @@ export default function HomeScreen({ profile, organisations }) {
         checkedRows={checkedRows}
         setCheckedRows={setCheckedRows}
         setIsOpenPopup={setIsOpenPopup}
-      /> */}
+      />
 
       <ProductTable
         products={products}

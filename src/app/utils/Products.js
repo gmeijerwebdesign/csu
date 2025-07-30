@@ -32,3 +32,19 @@ export async function getProducts(profile, filters = {}) {
 
   return products || [];
 }
+
+export async function deleteProduct(product_id, organisation_id) {
+  const res = await fetch("/api/delete-product", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product_id, organisation_id }),
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("Fout bij verwijderen product:", errorText);
+    return { success: false, error: errorText };
+  }
+
+  return { success: true };
+}

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { addUser } from "../utils/addUser.js";
+import { addUser } from "../../utils/addUser.js";
 
 export default function Admin({ organisations }) {
   const [selectedOrganisation, setSelectedOrganisation] = useState("");

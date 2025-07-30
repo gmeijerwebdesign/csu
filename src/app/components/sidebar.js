@@ -19,7 +19,7 @@ export default function SideBar({
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      router.push("/login");
+      router.push("/pages/login");
     } else {
       console.error("Logout mislukt:", error.message);
     }

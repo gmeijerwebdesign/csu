@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
-import MainLayout from "./components/MainLayout";
+import MainLayout from "./MainLayout";
 import { getOrganisation } from "./utils/Organisations";
 import { getMessage } from "./api/message/receive-message/route";
 
@@ -16,7 +16,7 @@ export default async function Main() {
   } = await supabase.auth.getUser();
 
   if (userError || !user) {
-    redirect("/login");
+    redirect("/pages/login");
   }
 
   // 🧑‍💼 Haal profiel op
@@ -28,7 +28,7 @@ export default async function Main() {
 
   if (profileError || !profile) {
     console.error("Profiel niet gevonden:", profileError);
-    redirect("/login"); // of een foutpagina
+    redirect("/pages/login"); // of een foutpagina
   }
 
   const notifications = await getMessage(profile);

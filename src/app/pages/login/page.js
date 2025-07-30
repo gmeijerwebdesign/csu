@@ -1,13 +1,13 @@
 "use client";
 import { login } from "./actions";
-import { createClient } from "../utils/supabase/client";
+import { createClient } from "../../utils/supabase/client";
 import { useState } from "react";
 
 export default function LoginPage() {
   const supabase = createClient();
 
   const [email, setEmail] = useState("");
-  const [isResetMode, setIsResetMode] = useState(false); // toggle mode
+  const [isResetMode, setIsResetMode] = useState(false);
 
   const handleForgotPassword = async () => {
     if (!email) {

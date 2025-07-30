@@ -3,7 +3,7 @@ import { FaPlus, FaTrash } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { BiTransfer } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
-import MobileProductTable from "../components/mobileProductTable";
+import MobileProductTable from "../../components/mobileProductTable";
 
 export default function ProductTable({
   setSelectedTimeBox,
