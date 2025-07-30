@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function Popup({ setIsOpenPopup, handleDelete }) {
+export default function Popup({ setIsOpenPopup, handleDelete, checkedRows }) {
+  const e = Object.keys(checkedRows).length;
   return (
     <div className="fixed inset-0  flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl shadow-lg p-6 w-[90%] max-w-md">
@@ -8,7 +9,7 @@ export default function Popup({ setIsOpenPopup, handleDelete }) {
           Weet je het zeker?
         </h2>
         <p className="text-sm text-gray-600 mb-6">
-          Deze actie kan niet ongedaan worden gemaakt.
+          weet je zeker dat je {e} rij/en wilt verwijderen?
         </p>
 
         <div className="flex justify-end gap-4">

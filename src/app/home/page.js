@@ -93,7 +93,7 @@ export default function HomeScreen({ profile, organisations }) {
       <h1 className="py-4 font-bold text-xl text-slate-800">
         Inventariesatiebeheer
       </h1>
-      <Filters
+      {/* <Filters
         amountOrder={amountOrder}
         onAmountSortToggle={toggleAmountSort}
         productTitleOrder={productTitleOrder}
@@ -102,7 +102,7 @@ export default function HomeScreen({ profile, organisations }) {
         checkedRows={checkedRows}
         setCheckedRows={setCheckedRows}
         setIsOpenPopup={setIsOpenPopup}
-      />
+      /> */}
 
       <ProductTable
         products={products}
@@ -135,6 +135,7 @@ export default function HomeScreen({ profile, organisations }) {
           <Popup
             setIsOpenPopup={setIsOpenPopup}
             handleDelete={handleDeleteChecked}
+            checkedRows={checkedRows}
           />
         </div>
       )}

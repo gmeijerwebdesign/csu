@@ -13,8 +13,6 @@ export default function Filters({
   checkedRows,
   setIsOpenPopup,
 }) {
-  let isChecked = Object.keys(checkedRows).length > 0;
-
   const arrowStyle = "relative top-1/13";
   const arrowDown = <MdKeyboardArrowDown className={arrowStyle} />;
   const arrowUp = <IoIosArrowUp className={arrowStyle} size={13} />;
