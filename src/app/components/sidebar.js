@@ -54,13 +54,17 @@ export default function SideBar({
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex min-h-screen pt-11 w-[15%] bg-[#161c26] text-[#e4e8ee] font-medium text-[12px]">
+      <div className="hidden lg:flex min-h-screen pt-4 w-[10%] bg-[#f5f5f5] text-[#525252] font-bold text-[12px]">
         <div className="flex flex-col gap-7 w-full">
-          <p className="text-center relative -top-6">{user?.email}</p>
+          <div className="shadow-sm h-[46px]">
+            <p className="px-4 relative font-bold text-xl tracking-wide">
+              Sidebar
+            </p>
+          </div>
           {menuItems.map((item, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 hover:bg-[#25333f] px-4 py-2 rounded cursor-pointer"
+              className="flex items-center gap-3 hover:bg-[#25333f] px-4 py-3 rounded cursor-pointer"
               onClick={() => handleClick(item.value)}
             >
               {item.icon}

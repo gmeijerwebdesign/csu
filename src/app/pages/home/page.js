@@ -1,147 +1,99 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import ProductTable from "./ProductTable";
+import React, { useState } from "react";
+import ProductTable from "./components/ProductTable";
 import FormModal from "../../components/formModal";
 import OrganisationModal from "../../components/organisationModal";
-import Filters from "./filters";
-import { deleteProduct, getProducts } from "../../utils/Products";
+import Filters from "./components/filters";
 import Popup from "../../blocks/popup";
+import useHook from "../../hooks/useHook";
 
-export default function HomeScreen({ profile, organisations }) {
+export default function HomeScreen({
+  profile,
+  organisations,
+  currentTab,
+  setCurrentTab,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenOrg, setIsOpenOrg] = useState(false);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [selectedTimeBox, setSelectedTimeBox] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mode, setMode] = useState(null);
-  const [glow, setGlow] = useState(false);
 
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    products,
+    isLoading,
+    glow,
+    amountOrder,
+    productTitleOrder,
+    setProductTitleOrder,
+    handleTitleSortSubmit,
+    toggleAmountSort,
+    handleDelete,
+    handleDeleteChecked,
+    checkedRows,
+    setCheckedRows,
+    setGlow,
+    setProducts,
+  } = useHook(profile);
 
-  const [amountOrder, setAmountOrder] = useState("asc");
-  const [productTitleOrder, setProductTitleOrder] = useState("");
-
-  const [checkedRows, setCheckedRows] = useState({});
-
-  useEffect(() => {
-    const fetchInitial = async () => {
-      const data = await getProducts(profile, {
-        amountOrder,
-        productTitleOrder,
-      });
-      setProducts(data);
-      setIsLoading(false);
-    };
-    fetchInitial();
-  }, [profile]);
-
-  const toggleAmountSort = async () => {
-    const newOrder = amountOrder === "asc" ? "desc" : "asc";
-    setAmountOrder(newOrder);
-    const data = await getProducts(profile, {
-      amountOrder: newOrder,
-      productTitleOrder,
-    });
-    setProducts(data);
+  const allProps = {
+    products,
+    isLoading,
+    glow,
+    amountOrder,
+    productTitleOrder,
+    selectedProduct,
+    setSelectedProduct,
+    setIsOpenOrg,
+    organisations,
+    setProductTitleOrder,
+    handleTitleSortSubmit,
+    toggleAmountSort,
+    handleDelete,
+    handleDeleteChecked,
+    checkedRows,
+    setCheckedRows,
+    setGlow,
+    setProducts,
+    setIsOpenPopup,
+    mode,
+    selectedTimeBox,
+    setIsOpen,
+    profile,
+    setProducts,
   };
 
-  const handleTitleSortSubmit = async (e) => {
-    e.preventDefault();
-    const data = await getProducts(profile, {
-      amountOrder,
-      productTitleOrder,
-    });
-    setProducts(data);
-  };
-
-  const handleDelete = async (product_id) => {
-    if (!product_id) return console.error("Geen product_id beschikbaar!");
-
-    const { success } = await deleteProduct(
-      product_id,
-      profile.organisation_id
-    );
-    if (!success) return;
-
-    setProducts((prev) =>
-      prev.filter((product) => product.product_id !== product_id)
-    );
-    setGlow(true);
-    setTimeout(() => setGlow(false), 2000);
-  };
-
-  const handleDeleteChecked = async () => {
-    const e = Object.values(checkedRows);
-    for (const { product_id } of e) {
-      await handleDelete(product_id);
+  const renderSelectedTab = () => {
+    switch (currentTab) {
+      case "inventaris":
+        return <ProductTable {...allProps} />;
+        break;
     }
-    setCheckedRows({});
   };
 
   return (
     <div>
-      <h1 className="py-4 font-bold text-xl text-slate-800">
-        Inventariesatiebeheer
-      </h1>
-      <Filters
-        amountOrder={amountOrder}
-        onAmountSortToggle={toggleAmountSort}
-        productTitleOrder={productTitleOrder}
-        setProductTitleOrder={setProductTitleOrder}
-        onTitleSortSubmit={handleTitleSortSubmit}
-        checkedRows={checkedRows}
-        setCheckedRows={setCheckedRows}
-        setIsOpenPopup={setIsOpenPopup}
-      />
-
-      <ProductTable
-        products={products}
-        setSelectedTimeBox={setSelectedTimeBox}
-        setIsOpen={setIsOpen}
-        setMode={setMode}
-        setProducts={setProducts}
-        profile={profile}
-        setGlow={setGlow}
-        glow={glow}
-        setIsOpenOrg={setIsOpenOrg}
-        setSelectedProduct={setSelectedProduct}
-        handleDelete={handleDelete}
-        checkedRows={checkedRows}
-        setCheckedRows={setCheckedRows}
-      />
-
+    
+      <Filters {...allProps} />
+      {/* main */}
+      {renderSelectedTab()}
+      {/*  */}
       {isOpenOrg && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <OrganisationModal
-            setIsOpenOrg={setIsOpenOrg}
-            organisations={organisations}
-            selectedProduct={selectedProduct}
-          />
+          <OrganisationModal {...allProps} />
         </div>
       )}
 
       {isOpenPopup && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <Popup
-            setIsOpenPopup={setIsOpenPopup}
-            handleDelete={handleDeleteChecked}
-            checkedRows={checkedRows}
-          />
+          <Popup {...allProps} />
         </div>
       )}
 
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <FormModal
-            selectedTimeBox={selectedTimeBox}
-            setIsOpen={setIsOpen}
-            mode={mode}
-            profile={profile}
-            setProducts={setProducts}
-            setGlow={setGlow}
-          />
+          <FormModal {...allProps} />
         </div>
       )}
     </div>

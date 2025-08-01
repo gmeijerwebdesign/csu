@@ -18,7 +18,7 @@ export default function MainLayout({
   notifications: initialNotifications,
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+  const [currentTab, setCurrentTab] = useState("inventaris");
   const [currentNav, setCurrentNav] = useState("home");
   const [notifications, setNotifications] = useState(
     initialNotifications || []
@@ -46,6 +46,8 @@ export default function MainLayout({
         products={products}
         profile={profile}
         organisations={organisations}
+        setCurrentTab={setCurrentTab}
+        currentTab={currentTab}
       />
     );
     switch (nav) {
@@ -93,10 +95,8 @@ export default function MainLayout({
           isNotification={isNotification}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        <Banner />
-        <div className="p-4 bg-[rgb(243,243,244)] w-full ">
-          {displayScreen(currentNav)}
-        </div>
+        <Banner currentNav={currentNav} />
+        <div className="p-4  w-full ">{displayScreen(currentNav)}</div>
       </div>
     </div>
   );

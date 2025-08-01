@@ -6,10 +6,10 @@ import { FaTrash } from "react-icons/fa";
 
 export default function Filters({
   amountOrder,
-  onAmountSortToggle,
+  toggleAmountSort,
   productTitleOrder,
   setProductTitleOrder,
-  onTitleSortSubmit,
+  handleTitleSortSubmit,
   checkedRows,
   setIsOpenPopup,
 }) {
@@ -22,10 +22,10 @@ export default function Filters({
 
   return (
     <div className="flex gap-4 p-1 py-4 items-center">
-      <p className={filterBoxStyle} onClick={onAmountSortToggle}>
+      <p className={filterBoxStyle} onClick={toggleAmountSort}>
         aantal {amountOrder === "asc" ? arrowDown : arrowUp}
       </p>
-      <form className="flex" onSubmit={onTitleSortSubmit}>
+      <form className="flex" onSubmit={handleTitleSortSubmit}>
         <input
           type="text"
           placeholder="zoeken..."

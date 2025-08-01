@@ -1,15 +1,30 @@
-export default function Banner() {
+import { useEffect, useState } from "react";
+
+export default function Banner({ currentNav }) {
+  const [bannerTitle, setBannerTitle] = useState("");
+  useEffect(() => {
+    switch (currentNav) {
+      case "home":
+        setBannerTitle("Dashboard");
+        break;
+      case "Settings":
+        setBannerTitle("Settings");
+        break;
+      case "admin":
+        setBannerTitle("Admin");
+        break;
+      case "Organisatiebeheer":
+        setBannerTitle("Organisatiebeheer");
+        break;
+      default:
+        setBannerTitle("Dashboard");
+    }
+  }, [currentNav]);
   return (
-    <div className="px-2 border-t-1 border-b-1 border-gray-200">
-      <div className="flex justify-between items-center">
-        <h1 className="csu font-bold text-md sm:text-2xl text-[#9a9a9a]">
-          CSU | Scherp op schoon
-        </h1>
-        <img
-          src="unnamed.png"
-          className="relative -right-2 max-h-[50px] sm:max-h-[100px]"
-        />
-      </div>
+    <div className="p-4 flex justify-between shadow-sm w-full text-gray-500 text-sm items-center">
+      <h1 className="py-2 font-bold text-2xl tracking-wide text-slate-800">
+        {bannerTitle}
+      </h1>
     </div>
   );
 }
