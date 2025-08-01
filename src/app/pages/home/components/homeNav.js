@@ -4,7 +4,7 @@ import { BiArchive } from "react-icons/bi";
 
 const defaultTabs = [
   { key: "inventaris", label: "Inventaris", Icon: CiGrid41 },
-  { key: "orders", label: "Bestellingen", Icon: BiArchive },
+  { key: "medewerkerkaart", label: "Medewerkers", Icon: BiArchive },
   // voeg hier extra tabs toe als je ze nodig hebt
 ];
 
@@ -34,7 +34,7 @@ export default function HomeNav({
                     ? "bg-blue-600 text-white shadow-md"
                     : "bg-white text-gray-700 hover:bg-gray-100"
                 }
-                focus:outline-none focus:ring-2 focus:ring-blue-400
+                focus:outline-none focus:bg-gray-100
               `}
               aria-current={active ? "page" : undefined}
             >

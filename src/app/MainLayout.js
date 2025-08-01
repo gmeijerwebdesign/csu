@@ -16,6 +16,7 @@ export default function MainLayout({
   profile,
   organisations,
   notifications: initialNotifications,
+  isAuth,
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("inventaris");
@@ -38,6 +39,7 @@ export default function MainLayout({
     setCurrentNav(nav);
     console.log(currentNav);
   };
+  console.log(profile);
 
   const displayScreen = (nav) => {
     const home = (
@@ -85,6 +87,7 @@ export default function MainLayout({
         profile={profile}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+        isAuth={isAuth}
       />
 
       <div className="flex flex-col w-full max-w-full">

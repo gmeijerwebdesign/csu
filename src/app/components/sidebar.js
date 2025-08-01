@@ -6,6 +6,7 @@ import { IoMdSettings } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { createClient } from "../utils/supabase/client";
 import { RiAdminFill } from "react-icons/ri";
+import { useEffect } from "react";
 export default function SideBar({
   handleNavigation,
   user,
@@ -31,7 +32,7 @@ export default function SideBar({
     { label: "Uitloggen", value: "logout", icon: <MdOutlineLogout /> },
   ];
 
-  if (profile.organisation_id === 13) {
+  if (profile.organisation_id === 13 && profile.role === "manager") {
     menuItems.push(
       { label: "admin", value: "admin", icon: <RiAdminFill /> },
       {

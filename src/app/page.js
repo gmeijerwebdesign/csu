@@ -31,6 +31,8 @@ export default async function Main() {
     redirect("/pages/login"); // of een foutpagina
   }
 
+  const isAuth = profile.organisation_id === 13 || profile.role === "manager";
+
   const notifications = await getMessage(profile);
   const organisations = await getOrganisation();
 
@@ -40,6 +42,7 @@ export default async function Main() {
       profile={profile}
       organisations={organisations || []}
       notifications={notifications}
+      isAuth={isAuth}
     />
   );
 }

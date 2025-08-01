@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import ProductTable from "./components/ProductTable";
+import React, { useState, useCallback } from "react";
+import ProductTable from "./tabs/ProductTable";
 import FormModal from "../../components/formModal";
 import OrganisationModal from "../../components/organisationModal";
 import Filters from "./components/filters";
@@ -8,6 +8,7 @@ import Popup from "../../blocks/popup";
 import useHook from "../../hooks/useHook";
 import Footer from "@/app/components/footer";
 import HomeNav from "./components/homeNav";
+import UserInformation from "./tabs/UserInformation";
 
 export default function HomeScreen({
   profile,
@@ -35,10 +36,11 @@ export default function HomeScreen({
     handleDeleteChecked,
     checkedRows,
     setCheckedRows,
-
     setGlow,
     setProducts,
   } = useHook(profile);
+
+  const showFilters = currentTab === "inventaris";
 
   const allProps = {
     products,
@@ -66,25 +68,28 @@ export default function HomeScreen({
     setSelectedTimeBox,
     setIsOpen,
     profile,
-    setProducts,
+    setCurrentTab,
   };
 
-  const renderSelectedTab = () => {
+  const renderSelectedTab = useCallback(() => {
     switch (currentTab) {
       case "inventaris":
         return <ProductTable {...allProps} />;
-        break;
+      case "medewerkerkaart":
+        return <UserInformation {...allProps} />;
+      default:
+        return null; // or a placeholder like <div>Select a tab</div>
     }
-  };
+  }, [currentTab, allProps]);
 
   return (
     <div>
       <div className="p-4">
         <HomeNav {...allProps} />
-        <Filters {...allProps} />
+        {showFilters && <Filters {...allProps} />}
         {/* main */}
         {renderSelectedTab()}
-        {/*  */}
+        {/* modals */}
         {isOpenOrg && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
             <OrganisationModal {...allProps} />
