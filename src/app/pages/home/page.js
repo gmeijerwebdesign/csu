@@ -6,6 +6,8 @@ import OrganisationModal from "../../components/organisationModal";
 import Filters from "./components/filters";
 import Popup from "../../blocks/popup";
 import useHook from "../../hooks/useHook";
+import Footer from "@/app/components/footer";
+import HomeNav from "./components/homeNav";
 
 export default function HomeScreen({
   profile,
@@ -33,6 +35,7 @@ export default function HomeScreen({
     handleDeleteChecked,
     checkedRows,
     setCheckedRows,
+
     setGlow,
     setProducts,
   } = useHook(profile);
@@ -58,7 +61,9 @@ export default function HomeScreen({
     setProducts,
     setIsOpenPopup,
     mode,
+    setMode,
     selectedTimeBox,
+    setSelectedTimeBox,
     setIsOpen,
     profile,
     setProducts,
@@ -74,28 +79,31 @@ export default function HomeScreen({
 
   return (
     <div>
-    
-      <Filters {...allProps} />
-      {/* main */}
-      {renderSelectedTab()}
-      {/*  */}
-      {isOpenOrg && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <OrganisationModal {...allProps} />
-        </div>
-      )}
+      <div className="p-4">
+        <HomeNav {...allProps} />
+        <Filters {...allProps} />
+        {/* main */}
+        {renderSelectedTab()}
+        {/*  */}
+        {isOpenOrg && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <OrganisationModal {...allProps} />
+          </div>
+        )}
 
-      {isOpenPopup && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <Popup {...allProps} />
-        </div>
-      )}
+        {isOpenPopup && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <Popup {...allProps} />
+          </div>
+        )}
 
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <FormModal {...allProps} />
-        </div>
-      )}
+        {isOpen && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <FormModal {...allProps} />
+          </div>
+        )}
+      </div>
+      <Footer />
     </div>
   );
 }

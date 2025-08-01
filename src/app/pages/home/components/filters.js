@@ -21,30 +21,66 @@ export default function Filters({
     "flex items-center text-gray-800 italic cursor-pointer";
 
   return (
-    <div className="flex gap-4 p-1 py-4 items-center">
-      <p className={filterBoxStyle} onClick={toggleAmountSort}>
-        aantal {amountOrder === "asc" ? arrowDown : arrowUp}
-      </p>
-      <form className="flex" onSubmit={handleTitleSortSubmit}>
-        <input
-          type="text"
-          placeholder="zoeken..."
-          className="searchbar"
-          value={productTitleOrder}
-          onChange={(e) => setProductTitleOrder(e.target.value)}
-        />
-        <div className="bg-white h-[35px] w-[30px] flex items-center justify-center">
-          <button type="submit">
-            <MdOutlineSearch size={23} />
-          </button>
-        </div>
-      </form>
-      {Object.keys(checkedRows).length > 0 && (
-        <FaTrash
-          className="text-red-500 cursor-pointer"
-          onClick={() => setIsOpenPopup(true)}
-        />
-      )}
+    <div className="flex gap-6 p-1 py-4 items-center  ">
+      {/* merk */}
+      <div className="flex flex-col w-48">
+        <label className="text-xs font-bold text-blue-900 mb-1">Merk</label>
+        <select className="border border-gray-300 text-gray-600 text-sm px-2 py-1 shadow-sm">
+          <option>&lt;Alle&gt;</option>
+        </select>
+      </div>
+      {/* categorie */}
+      <div className="flex flex-col w-48">
+        <label className="text-xs font-bold text-blue-900 mb-1">
+          categorie
+        </label>
+        <select className="border border-gray-300 text-gray-600 text-sm px-2 py-1 shadow-sm">
+          <option>&lt;Alle&gt;</option>
+        </select>
+      </div>
+      {/* leverancier */}
+      <div className="flex flex-col w-48">
+        <label className="text-xs font-bold text-blue-900 mb-1">
+          leverancier
+        </label>
+        <select className="border border-gray-300 text-gray-600 text-sm px-2 py-1 shadow-sm">
+          <option>&lt;Alle&gt;</option>
+        </select>
+      </div>
+
+      <div className="flex gap-6 pt-4">
+        {/* voorraad */}
+        <p className={filterBoxStyle} onClick={toggleAmountSort}>
+          aantal {amountOrder === "asc" ? arrowDown : arrowUp}
+        </p>
+        {/*bestelstatus */}
+        <p className={`${filterBoxStyle} text-green-600 cursor-pointer`}>
+          bestelstatus
+        </p>
+        {/* naam filter */}
+        <form className="flex" onSubmit={handleTitleSortSubmit}>
+          <input
+            type="text"
+            placeholder="zoeken..."
+            className="searchbar"
+            value={productTitleOrder}
+            onChange={(e) => setProductTitleOrder(e.target.value)}
+          />
+          <div className="bg-white h-[35px] w-[30px] flex items-center justify-center">
+            <button type="submit">
+              <MdOutlineSearch size={23} />
+            </button>
+          </div>
+        </form>
+        {Object.keys(checkedRows).length > 0 && (
+          <div className="pt-2">
+            <FaTrash
+              className="text-red-500 cursor-pointer "
+              onClick={() => setIsOpenPopup(true)}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

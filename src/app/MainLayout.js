@@ -96,7 +96,7 @@ export default function MainLayout({
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <Banner currentNav={currentNav} />
-        <div className="p-4  w-full ">{displayScreen(currentNav)}</div>
+        <div className="  w-full ">{displayScreen(currentNav)}</div>
       </div>
     </div>
   );
