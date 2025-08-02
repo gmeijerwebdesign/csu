@@ -4,7 +4,7 @@ import { IoIosArrowUp } from "react-icons/io";
 import { MdOutlineSearch } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 
-export default function Filters({
+export default function UserFilters({
   amountOrder,
   toggleAmountSort,
   productTitleOrder,
@@ -23,33 +23,31 @@ export default function Filters({
 
   return (
     <div className="flex gap-6 p-1 py-4 items-center  ">
-      {/* merk */}
+      {/* status */}
       <div className="flex flex-col w-48">
-        <label className="text-xs font-bold text-blue-900 mb-1">Merk</label>
+        <label className="text-xs font-bold text-blue-900 mb-1">actief</label>
         <select className="border border-gray-300 text-gray-600 text-sm px-2 py-1 shadow-sm">
           <option>&lt;Alle&gt;</option>
         </select>
       </div>
-      {/* categorie */}
+      {/* afdeling */}
       <div className="flex flex-col w-48">
-        <label className="text-xs font-bold text-blue-900 mb-1">
-          categorie
-        </label>
+        <label className="text-xs font-bold text-blue-900 mb-1">afdeling</label>
         <select className="border border-gray-300 text-gray-600 text-sm px-2 py-1 shadow-sm">
           <option>&lt;Alle&gt;</option>
         </select>
       </div>
-      {/* leverancier */}
+      {/* functienaam */}
       <div className="flex flex-col w-48">
         <label className="text-xs font-bold text-blue-900 mb-1">
-          leverancier
+          functienaam
         </label>
         <select className="border border-gray-300 text-gray-600 text-sm px-2 py-1 shadow-sm">
           <option>&lt;Alle&gt;</option>
         </select>
       </div>
 
-      <div className="flex gap-6 pt-4">
+      <div className=" pt-4">
         {/* naam filter */}
         <form className="flex" onSubmit={handleTitleSortSubmit}>
           <input
@@ -65,15 +63,6 @@ export default function Filters({
             </button>
           </div>
         </form>
-        {/* voorraad */}
-        <p className={filterBoxStyle} onClick={toggleAmountSort}>
-          aantal {amountOrder === "asc" ? arrowDown : arrowUp}
-        </p>
-        {/*bestelstatus */}
-        <p className={`${filterBoxStyle} text-green-600 cursor-pointer`}>
-          bestelstatus
-        </p>
-
         {Object.keys(checkedRows).length > 0 && (
           <div className="pt-2">
             <FaTrash

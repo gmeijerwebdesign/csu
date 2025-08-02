@@ -31,6 +31,20 @@ export default async function Main() {
     redirect("/pages/login"); // of een foutpagina
   }
 
+  // Haal alle profielen op met dezelfde organisation_id
+  const { data: teamProfiles, error: teamError } = await supabase
+    .from("profiles")
+    .select("id, role, organisation_id, email")
+    .eq("organisation_id", profile.organisation_id);
+
+  if (teamError) {
+    console.error("Fout bij ophalen van teamprofielen:", teamError);
+    return (
+      <div className="p-6">
+        <p>Er is een fout opgetreden bij het ophalen van gebruikers.</p>
+      </div>
+    );
+  }
   const isAuth = profile.organisation_id === 13 || profile.role === "manager";
 
   const notifications = await getMessage(profile);
@@ -40,6 +54,7 @@ export default async function Main() {
     <MainLayout
       user={user}
       profile={profile}
+      teamProfiles={teamProfiles}
       organisations={organisations || []}
       notifications={notifications}
       isAuth={isAuth}

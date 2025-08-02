@@ -17,6 +17,7 @@ export default function MainLayout({
   organisations,
   notifications: initialNotifications,
   isAuth,
+  teamProfiles,
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("inventaris");
@@ -37,9 +38,7 @@ export default function MainLayout({
 
   const handleNavigation = (nav) => {
     setCurrentNav(nav);
-    console.log(currentNav);
   };
-  console.log(profile);
 
   const displayScreen = (nav) => {
     const home = (
@@ -50,6 +49,7 @@ export default function MainLayout({
         organisations={organisations}
         setCurrentTab={setCurrentTab}
         currentTab={currentTab}
+        teamProfiles={teamProfiles}
       />
     );
     switch (nav) {

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ProductTable from "./tabs/ProductTable";
 import FormModal from "../../components/formModal";
 import OrganisationModal from "../../components/organisationModal";
@@ -9,19 +9,25 @@ import useHook from "../../hooks/useHook";
 import Footer from "@/app/components/footer";
 import HomeNav from "./components/homeNav";
 import UserInformation from "./tabs/UserInformation";
+import AllUsers from "./tabs/AllUsers";
+import UserFilters from "./components/userFilters";
+import CheckUser from "./components/checkUser";
 
 export default function HomeScreen({
   profile,
   organisations,
   currentTab,
   setCurrentTab,
+  teamProfiles,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenOrg, setIsOpenOrg] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // form modal
+  const [isOpenOrg, setIsOpenOrg] = useState(false); // organisation modal
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [selectedTimeBox, setSelectedTimeBox] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [mode, setMode] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [userEditMode, setUserEditMode] = useState(false);
 
   const {
     products,
@@ -41,6 +47,7 @@ export default function HomeScreen({
   } = useHook(profile);
 
   const showFilters = currentTab === "inventaris";
+  const showUserFilters = currentTab === "medewerkerkaart";
 
   const allProps = {
     products,
@@ -69,24 +76,46 @@ export default function HomeScreen({
     setIsOpen,
     profile,
     setCurrentTab,
+    teamProfiles,
+    selectedUser,
+    setSelectedUser,
+    userEditMode,
+    setUserEditMode,
   };
+  useEffect(() => {
+    // Reset edit mode when user is deselected or tab is changed
+    if (selectedUser === null || currentTab !== "medewerkerkaart") {
+      setUserEditMode(false);
+      setSelectedUser(null);
+    }
+  }, [selectedUser, currentTab]);
 
   const renderSelectedTab = useCallback(() => {
     switch (currentTab) {
       case "inventaris":
         return <ProductTable {...allProps} />;
+
       case "medewerkerkaart":
-        return <UserInformation {...allProps} />;
+        return selectedUser === null ? (
+          <AllUsers {...allProps} />
+        ) : userEditMode ? (
+          <UserInformation profile={selectedUser} />
+        ) : (
+          <CheckUser {...allProps} />
+        );
+
       default:
-        return null; // or a placeholder like <div>Select a tab</div>
+        return null;
     }
-  }, [currentTab, allProps]);
+  }, [allProps, currentTab, selectedUser, userEditMode]);
 
   return (
     <div>
-      <div className="p-4">
+      <div className="p-4 ">
         <HomeNav {...allProps} />
         {showFilters && <Filters {...allProps} />}
+        {showUserFilters && <UserFilters {...allProps} />}
+
         {/* main */}
         {renderSelectedTab()}
         {/* modals */}
