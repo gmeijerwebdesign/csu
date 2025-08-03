@@ -1,10 +1,16 @@
 import React from "react";
 import { CiGrid41 } from "react-icons/ci"; // voorbeeld icoon, pas aan als je wilt
 import { BiArchive } from "react-icons/bi";
+import { MdAppRegistration } from "react-icons/md";
 
 const defaultTabs = [
   { key: "inventaris", label: "Inventaris", Icon: CiGrid41 },
   { key: "medewerkerkaart", label: "Medewerkers", Icon: BiArchive },
+  {
+    key: "urenregistratie",
+    label: "Urenregistratie",
+    Icon: MdAppRegistration,
+  },
   // voeg hier extra tabs toe als je ze nodig hebt
 ];
 

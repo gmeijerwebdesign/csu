@@ -12,6 +12,7 @@ import UserInformation from "./tabs/UserInformation";
 import AllUsers from "./tabs/AllUsers";
 import UserFilters from "./components/userFilters";
 import CheckUser from "./components/checkUser";
+import Urenregistratie from "./tabs/UrenRegistratie";
 
 export default function HomeScreen({
   profile,
@@ -94,6 +95,8 @@ export default function HomeScreen({
     switch (currentTab) {
       case "inventaris":
         return <ProductTable {...allProps} />;
+      case "urenregistratie":
+        return <Urenregistratie {...allProps} />;
 
       case "medewerkerkaart":
         return selectedUser === null ? (
